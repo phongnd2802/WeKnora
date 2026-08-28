@@ -87,14 +87,14 @@ func NewHandler(
 }
 
 // CreateSession godoc
-// @Summary      创建会话
-// @Description  创建新的对话会话
-// @Tags         会话
+// @Summary      Create a session
+// @Description  Create a new conversation session
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        request  body      CreateSessionRequest  true  "会话创建请求"
-// @Success      201      {object}  map[string]interface{}  "创建的会话"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      CreateSessionRequest  true  "Session creation request"
+// @Success      201      {object}  map[string]interface{}  "Created session"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions [post]
@@ -156,14 +156,14 @@ func (h *Handler) CreateSession(c *gin.Context) {
 }
 
 // GetSession godoc
-// @Summary      获取会话详情
-// @Description  根据ID获取会话详情
-// @Tags         会话
+// @Summary      Get session details
+// @Description  Get session details by ID
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "会话ID"
-// @Success      200  {object}  map[string]interface{}  "会话详情"
-// @Failure      404  {object}  errors.AppError         "会话不存在"
+// @Param        id   path      string  true  "Session ID"
+// @Success      200  {object}  map[string]interface{}  "Session details"
+// @Failure      404  {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{id} [get]
@@ -203,18 +203,18 @@ func (h *Handler) GetSession(c *gin.Context) {
 }
 
 // GetSessionsByTenant godoc
-// @Summary      获取会话列表
-// @Description  获取当前空间的会话列表，支持分页、关键字搜索、按来源/Agent 筛选
-// @Tags         会话
+// @Summary      Get session list
+// @Description  Get the list of sessions in the current space, with support for pagination, keyword search, and filtering by source/agent
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        page       query     int     false  "页码"
-// @Param        page_size  query     int     false  "每页数量"
-// @Param        keyword    query     string  false  "标题模糊搜索"
-// @Param        source     query     string  false  "来源过滤：web / embed / api / feishu / wechat / slack / ...（api、embed、IM 渠道需 Admin+）"
-// @Param        agent_id   query     string  false  "按 Agent 过滤（仅对 IM 会话生效）"
-// @Success      200        {object}  map[string]interface{}  "会话列表"
-// @Failure      400        {object}  errors.AppError         "请求参数错误"
+// @Param        page       query     int     false  "Page number"
+// @Param        page_size  query     int     false  "Page size"
+// @Param        keyword    query     string  false  "Fuzzy search by title"
+// @Param        source     query     string  false  "Filter by source: web / embed / api / feishu / wechat / slack / ... (api, embed, and IM channels require Admin+)"
+// @Param        agent_id   query     string  false  "Filter by agent (only takes effect for IM sessions)"
+// @Success      200        {object}  map[string]interface{}  "Session list"
+// @Failure      400        {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions [get]
@@ -255,15 +255,15 @@ func (h *Handler) GetSessionsByTenant(c *gin.Context) {
 }
 
 // UpdateSession godoc
-// @Summary      更新会话
-// @Description  更新会话属性
-// @Tags         会话
+// @Summary      Update session
+// @Description  Update session attributes
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string         true  "会话ID"
-// @Param        request  body      types.Session  true  "会话信息"
-// @Success      200      {object}  map[string]interface{}  "更新后的会话"
-// @Failure      404      {object}  errors.AppError         "会话不存在"
+// @Param        id       path      string         true  "Session ID"
+// @Param        request  body      types.Session  true  "Session information"
+// @Success      200      {object}  map[string]interface{}  "Updated session"
+// @Failure      404      {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{id} [put]
@@ -326,14 +326,14 @@ func (h *Handler) UpdateSession(c *gin.Context) {
 }
 
 // DeleteSession godoc
-// @Summary      删除会话
-// @Description  删除指定的会话
-// @Tags         会话
+// @Summary      Delete session
+// @Description  Delete the specified session
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "会话ID"
-// @Success      200  {object}  map[string]interface{}  "删除成功"
-// @Failure      404  {object}  errors.AppError         "会话不存在"
+// @Param        id   path      string  true  "Session ID"
+// @Success      200  {object}  map[string]interface{}  "Delete succeeded"
+// @Failure      404  {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{id} [delete]
@@ -368,15 +368,15 @@ func (h *Handler) DeleteSession(c *gin.Context) {
 }
 
 // ClearSessionMessages godoc
-// @Summary      清空会话消息
-// @Description  删除会话中的所有消息，同时清除 LLM 上下文和聊天历史知识库条目。会话本身保留。
-// @Tags         会话
+// @Summary      Clear session messages
+// @Description  Delete all messages in the session, and clear the LLM context and chat-history knowledge base entries. The session itself is retained.
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "会话ID"
-// @Success      200  {object}  map[string]interface{}  "清空成功"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
-// @Failure      404  {object}  errors.AppError         "会话不存在"
+// @Param        id   path      string  true  "Session ID"
+// @Success      200  {object}  map[string]interface{}  "Clear succeeded"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404  {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{id}/messages [delete]
@@ -417,14 +417,14 @@ type batchDeleteRequest struct {
 }
 
 // BatchDeleteSessions godoc
-// @Summary      批量删除会话
-// @Description  根据ID列表批量删除对话会话，或设置 delete_all=true 删除当前空间的所有会话
-// @Tags         会话
+// @Summary      Batch delete sessions
+// @Description  Batch delete conversation sessions by a list of IDs, or set delete_all=true to delete all sessions in the current space
+// @Tags         Session
 // @Accept       json
 // @Produce      json
-// @Param        request  body      batchDeleteRequest  true  "批量删除请求"
-// @Success      200      {object}  map[string]interface{}  "删除结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      batchDeleteRequest  true  "Batch delete request"
+// @Success      200      {object}  map[string]interface{}  "Delete result"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/batch [delete]
@@ -488,13 +488,13 @@ func (h *Handler) BatchDeleteSessions(c *gin.Context) {
 }
 
 // PinSession godoc
-// @Summary      置顶会话
-// @Description  将指定会话置顶（用户维度）
-// @Tags         会话
+// @Summary      Pin session
+// @Description  Pin the specified session (per-user)
+// @Tags         Session
 // @Produce      json
-// @Param        session_id   path      string  true  "会话ID"
-// @Success      200  {object}  map[string]interface{}  "置顶成功"
-// @Failure      404  {object}  errors.AppError         "会话不存在"
+// @Param        session_id   path      string  true  "Session ID"
+// @Success      200  {object}  map[string]interface{}  "Pin succeeded"
+// @Failure      404  {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{session_id}/pin [post]
@@ -503,13 +503,13 @@ func (h *Handler) PinSession(c *gin.Context) {
 }
 
 // UnpinSession godoc
-// @Summary      取消置顶会话
-// @Description  取消指定会话的置顶
-// @Tags         会话
+// @Summary      Unpin session
+// @Description  Unpin the specified session
+// @Tags         Session
 // @Produce      json
-// @Param        id   path      string  true  "会话ID"
-// @Success      200  {object}  map[string]interface{}  "取消置顶成功"
-// @Failure      404  {object}  errors.AppError         "会话不存在"
+// @Param        id   path      string  true  "Session ID"
+// @Success      200  {object}  map[string]interface{}  "Unpin succeeded"
+// @Failure      404  {object}  errors.AppError         "Session does not exist"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /sessions/{id}/pin [delete]

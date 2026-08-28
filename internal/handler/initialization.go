@@ -100,7 +100,7 @@ type KBModelConfigRequest struct {
 	VLMConfig        *types.VLMConfig `json:"vlm_config"`
 	ASRConfig        *types.ASRConfig `json:"asr_config"`
 
-	// 文档分块配置
+	// Document chunking configuration
 	DocumentSplitting struct {
 		ChunkSize         int                      `json:"chunkSize"`
 		ChunkOverlap      int                      `json:"chunkOverlap"`
@@ -120,16 +120,18 @@ type KBModelConfigRequest struct {
 		TableMetadataInstructions *string   `json:"tableMetadataInstructions,omitempty"`
 	} `json:"documentSplitting"`
 
-	// 多模态配置（仅模型相关；存储引擎在 storageProvider 中配置）
+	// Multimodal configuration (model-related only; the storage engine is
+	// configured in storageProvider)
 	Multimodal struct {
 		Enabled bool `json:"enabled"`
 	} `json:"multimodal"`
 
-	// 存储引擎选择（"local" | "minio" | "cos"），影响文档上传与文档内图片存储，参数从全局设置读取
+	// Storage engine selection ("local" | "minio" | "cos"), affects document
+	// upload and in-document image storage; parameters are read from global settings
 	StorageProvider  string `json:"storageProvider"`
 	StorageBackendID string `json:"storageBackendId"`
 
-	// 知识图谱配置
+	// Knowledge graph configuration
 	NodeExtract struct {
 		Enabled            bool                  `json:"enabled"`
 		Text               string                `json:"text"`
@@ -139,7 +141,7 @@ type KBModelConfigRequest struct {
 		CustomInstructions string                `json:"customInstructions"`
 	} `json:"nodeExtract"`
 
-	// 问题生成配置
+	// Question generation configuration
 	QuestionGeneration struct {
 		Enabled            bool   `json:"enabled"`
 		QuestionCount      int    `json:"questionCount"`
@@ -161,7 +163,7 @@ type InitializationRequest struct {
 		ModelName string `json:"modelName" binding:"required"`
 		BaseURL   string `json:"baseUrl"`
 		APIKey    string `json:"apiKey"`
-		Dimension int    `json:"dimension"` // 添加embedding维度字段
+		Dimension int    `json:"dimension"` // embedding dimension field
 	} `json:"embedding" binding:"required"`
 
 	Rerank struct {
@@ -222,16 +224,16 @@ type InitializationRequest struct {
 }
 
 // UpdateKBConfig godoc
-// @Summary      更新知识库配置
-// @Description  根据知识库ID更新模型和分块配置
-// @Tags         初始化
+// @Summary      Update knowledge base configuration
+// @Description  Update model and chunking configuration by knowledge base ID
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        kbId     path      string               true  "知识库ID"
-// @Param        request  body      KBModelConfigRequest true  "配置请求"
-// @Success      200      {object}  map[string]interface{}  "更新成功"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
-// @Failure      404      {object}  errors.AppError         "知识库不存在"
+// @Param        kbId     path      string               true  "Knowledge base ID"
+// @Param        request  body      KBModelConfigRequest true  "Configuration request"
+// @Success      200      {object}  map[string]interface{}  "Update succeeded"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404      {object}  errors.AppError         "Knowledge base not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/config/{kbId} [put]
@@ -482,15 +484,15 @@ func (h *InitializationHandler) UpdateKBConfig(c *gin.Context) {
 }
 
 // InitializeByKB godoc
-// @Summary      初始化知识库配置
-// @Description  根据知识库ID执行完整配置更新
-// @Tags         初始化
+// @Summary      Initialize knowledge base configuration
+// @Description  Perform a full configuration update by knowledge base ID
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        kbId     path      string  true  "知识库ID"
-// @Param        request  body      handler.InitializationRequest  true  "初始化请求"
-// @Success      200      {object}  map[string]interface{}  "初始化成功"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        kbId     path      string  true  "Knowledge base ID"
+// @Param        request  body      handler.InitializationRequest  true  "Initialization request"
+// @Success      200      {object}  map[string]interface{}  "Initialization succeeded"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/initialize/{kbId} [post]
@@ -921,12 +923,12 @@ func extractModelIDs(processedModels []*types.Model) (embeddingModelID, llmModel
 }
 
 // CheckOllamaStatus godoc
-// @Summary      检查Ollama服务状态
-// @Description  检查Ollama服务是否可用
-// @Tags         初始化
+// @Summary      Check Ollama service status
+// @Description  Check whether the Ollama service is available
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "Ollama状态"
+// @Success      200  {object}  map[string]interface{}  "Ollama status"
 // @Router       /initialization/ollama/status [get]
 func (h *InitializationHandler) CheckOllamaStatus(c *gin.Context) {
 	ctx := c.Request.Context()
@@ -972,14 +974,14 @@ func (h *InitializationHandler) CheckOllamaStatus(c *gin.Context) {
 }
 
 // CheckOllamaModels godoc
-// @Summary      检查Ollama模型状态
-// @Description  检查指定的Ollama模型是否已安装
-// @Tags         初始化
+// @Summary      Check Ollama model status
+// @Description  Check whether the specified Ollama models are installed
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      object{models=[]string}  true  "模型名称列表"
-// @Success      200      {object}  map[string]interface{}   "模型状态"
-// @Failure      400      {object}  errors.AppError          "请求参数错误"
+// @Param        request  body      object{models=[]string}  true  "List of model names"
+// @Success      200      {object}  map[string]interface{}   "Model status"
+// @Failure      400      {object}  errors.AppError          "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/ollama/models/check [post]
@@ -1034,14 +1036,14 @@ func (h *InitializationHandler) CheckOllamaModels(c *gin.Context) {
 }
 
 // DownloadOllamaModel godoc
-// @Summary      下载Ollama模型
-// @Description  异步下载指定的Ollama模型
-// @Tags         初始化
+// @Summary      Download Ollama model
+// @Description  Asynchronously download the specified Ollama model
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      object{modelName=string}  true  "模型名称"
-// @Success      200      {object}  map[string]interface{}    "下载任务信息"
-// @Failure      400      {object}  errors.AppError           "请求参数错误"
+// @Param        request  body      object{modelName=string}  true  "Model name"
+// @Success      200      {object}  map[string]interface{}    "Download task info"
+// @Failure      400      {object}  errors.AppError           "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/ollama/models/download [post]
@@ -1146,14 +1148,14 @@ func (h *InitializationHandler) DownloadOllamaModel(c *gin.Context) {
 }
 
 // GetDownloadProgress godoc
-// @Summary      获取下载进度
-// @Description  获取Ollama模型下载任务的进度
-// @Tags         初始化
+// @Summary      Get download progress
+// @Description  Get the progress of an Ollama model download task
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        taskId  path      string  true  "任务ID"
-// @Success      200     {object}  map[string]interface{}  "下载进度"
-// @Failure      404     {object}  errors.AppError         "任务不存在"
+// @Param        taskId  path      string  true  "Task ID"
+// @Success      200     {object}  map[string]interface{}  "Download progress"
+// @Failure      404     {object}  errors.AppError         "Task not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/ollama/download/progress/{taskId} [get]
@@ -1181,12 +1183,12 @@ func (h *InitializationHandler) GetDownloadProgress(c *gin.Context) {
 }
 
 // ListDownloadTasks godoc
-// @Summary      列出下载任务
-// @Description  列出所有Ollama模型下载任务
-// @Tags         初始化
+// @Summary      List download tasks
+// @Description  List all Ollama model download tasks
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "任务列表"
+// @Success      200  {object}  map[string]interface{}  "Task list"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/ollama/download/tasks [get]
@@ -1205,13 +1207,13 @@ func (h *InitializationHandler) ListDownloadTasks(c *gin.Context) {
 }
 
 // ListOllamaModels godoc
-// @Summary      列出Ollama模型
-// @Description  列出已安装的Ollama模型
-// @Tags         初始化
+// @Summary      List Ollama models
+// @Description  List installed Ollama models
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "模型列表"
-// @Failure      500  {object}  errors.AppError         "服务器错误"
+// @Success      200  {object}  map[string]interface{}  "Model list"
+// @Failure      500  {object}  errors.AppError         "Server error"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/ollama/models [get]
@@ -1343,14 +1345,14 @@ func (h *InitializationHandler) updateTaskStatus(
 }
 
 // GetCurrentConfigByKB godoc
-// @Summary      获取知识库配置
-// @Description  根据知识库ID获取当前配置信息
-// @Tags         初始化
+// @Summary      Get knowledge base configuration
+// @Description  Get the current configuration by knowledge base ID
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        kbId  path      string  true  "知识库ID"
-// @Success      200   {object}  map[string]interface{}  "配置信息"
-// @Failure      404   {object}  errors.AppError         "知识库不存在"
+// @Param        kbId  path      string  true  "Knowledge base ID"
+// @Success      200   {object}  map[string]interface{}  "Configuration info"
+// @Failure      404   {object}  errors.AppError         "Knowledge base not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/config/{kbId} [get]
@@ -1623,7 +1625,7 @@ func (h *InitializationHandler) buildConfigResponse(ctx context.Context, models 
 // 所有 provider/model 通用字段都在这里集中声明；若未来新增字段（比如现在的
 // custom_headers），只需改一处，生产路径和测试路径会同时生效。
 type ModelTestRequest struct {
-	Source                    string            `json:"source"` // 为空时按需默认为 "remote"
+	Source                    string            `json:"source"` // defaults to "remote" when empty, as needed
 	ModelName                 string            `json:"modelName" binding:"required"`
 	BaseURL                   string            `json:"baseUrl"`
 	APIKey                    string            `json:"apiKey"`
@@ -1633,7 +1635,7 @@ type ModelTestRequest struct {
 	SupportsDimensionOverride bool              `json:"supportsDimensionOverride,omitempty"`
 	CustomHeaders             map[string]string `json:"customHeaders,omitempty"`
 	ExtraConfig               map[string]string `json:"extraConfig,omitempty"`
-	// AppSecret 用于 LKEAP / Volcengine Rerank 等需要第二段密钥的场景（对应模型 Parameters.AppSecret）。
+	// AppSecret is used for scenarios needing a second secret, such as LKEAP / Volcengine Rerank (maps to model Parameters.AppSecret).
 	AppSecret string `json:"appSecret,omitempty"`
 	// ModelID, when set, instructs the handler to substitute any missing
 	// secrets (APIKey, AppSecret via ExtraConfig) from the stored model
@@ -1740,14 +1742,14 @@ func (h *InitializationHandler) resolveTenantWeKnoraCloudCreds(ctx context.Conte
 }
 
 // CheckRemoteModel godoc
-// @Summary      检查远程模型
-// @Description  检查远程API模型连接是否正常
-// @Tags         初始化
+// @Summary      Check remote model
+// @Description  Check whether the connection to the remote API model is working
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      RemoteModelCheckRequest  true  "模型检查请求"
-// @Success      200      {object}  map[string]interface{}   "检查结果"
-// @Failure      400      {object}  errors.AppError          "请求参数错误"
+// @Param        request  body      RemoteModelCheckRequest  true  "Model check request"
+// @Success      200      {object}  map[string]interface{}   "Check result"
+// @Failure      400      {object}  errors.AppError          "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/remote/check [post]
@@ -1797,14 +1799,14 @@ func (h *InitializationHandler) CheckRemoteModel(c *gin.Context) {
 }
 
 // TestEmbeddingModel godoc
-// @Summary      测试Embedding模型
-// @Description  测试Embedding接口是否可用并返回向量维度
-// @Tags         初始化
+// @Summary      Test Embedding model
+// @Description  Test whether the Embedding interface is available and return the vector dimension
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      handler.ModelTestRequest  true  "Embedding测试请求"
-// @Success      200      {object}  map[string]interface{}  "测试结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      handler.ModelTestRequest  true  "Embedding test request"
+// @Success      200      {object}  map[string]interface{}  "Test result"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/embedding/test [post]
@@ -1965,14 +1967,14 @@ func (h *InitializationHandler) checkRerankModelConnection(
 }
 
 // CheckRerankModel godoc
-// @Summary      检查Rerank模型
-// @Description  检查Rerank模型连接和功能是否正常
-// @Tags         初始化
+// @Summary      Check Rerank model
+// @Description  Check whether the Rerank model connection and functionality are working
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      handler.ModelTestRequest  true  "Rerank检查请求"
-// @Success      200      {object}  map[string]interface{}  "检查结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      handler.ModelTestRequest  true  "Rerank check request"
+// @Success      200      {object}  map[string]interface{}  "Check result"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/rerank/check [post]
@@ -2027,14 +2029,14 @@ func (h *InitializationHandler) CheckRerankModel(c *gin.Context) {
 }
 
 // CheckASRModel godoc
-// @Summary      检查ASR模型
-// @Description  检查ASR（语音识别）模型连接是否正常，通过发送一段静默音频测试 /v1/audio/transcriptions 端点
-// @Tags         初始化
+// @Summary      Check ASR model
+// @Description  Check whether the ASR (speech recognition) model connection is working, by sending a silent audio clip to test the /v1/audio/transcriptions endpoint
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      handler.ModelTestRequest  true  "ASR检查请求"
-// @Success      200      {object}  map[string]interface{}  "检查结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      handler.ModelTestRequest  true  "ASR check request"
+// @Success      200      {object}  map[string]interface{}  "Check result"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/asr/check [post]
@@ -2152,19 +2154,19 @@ type testMultimodalForm struct {
 }
 
 // TestMultimodalFunction godoc
-// @Summary      测试多模态功能
-// @Description  上传图片测试多模态处理功能
-// @Tags         初始化
+// @Summary      Test multimodal functionality
+// @Description  Upload an image to test multimodal processing functionality
+// @Tags         Initialization
 // @Accept       multipart/form-data
 // @Produce      json
-// @Param        image             formData  file    true   "测试图片"
-// @Param        vlm_model         formData  string  true   "VLM模型名称"
+// @Param        image             formData  file    true   "Test image"
+// @Param        vlm_model         formData  string  true   "VLM model name"
 // @Param        vlm_base_url      formData  string  true   "VLM Base URL"
 // @Param        vlm_api_key       formData  string  false  "VLM API Key"
-// @Param        vlm_interface_type formData string  false  "VLM接口类型"
-// @Param        storage_type      formData  string  true   "存储类型(cos/minio)"
-// @Success      200               {object}  map[string]interface{}  "测试结果"
-// @Failure      400               {object}  errors.AppError         "请求参数错误"
+// @Param        vlm_interface_type formData string  false  "VLM interface type"
+// @Param        storage_type      formData  string  true   "Storage type (cos/minio)"
+// @Success      200               {object}  map[string]interface{}  "Test result"
+// @Failure      400               {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/multimodal/test [post]
@@ -2377,14 +2379,14 @@ type TextRelationExtractionResponse struct {
 }
 
 // ExtractTextRelations godoc
-// @Summary      提取文本关系
-// @Description  从文本中提取实体和关系
-// @Tags         初始化
+// @Summary      Extract text relations
+// @Description  Extract entities and relations from text
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      TextRelationExtractionRequest  true  "提取请求"
-// @Success      200      {object}  map[string]interface{}         "提取结果"
-// @Failure      400      {object}  errors.AppError                "请求参数错误"
+// @Param        request  body      TextRelationExtractionRequest  true  "Extraction request"
+// @Success      200      {object}  map[string]interface{}         "Extraction result"
+// @Failure      400      {object}  errors.AppError                "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/extract/text-relation [post]
@@ -2478,14 +2480,14 @@ type FabriTextResponse struct {
 }
 
 // FabriText godoc
-// @Summary      生成示例文本
-// @Description  根据标签生成示例文本
-// @Tags         初始化
+// @Summary      Generate sample text
+// @Description  Generate sample text based on tags
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Param        request  body      FabriTextRequest  true  "生成请求"
-// @Success      200      {object}  map[string]interface{}  "生成的文本"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      FabriTextRequest  true  "Generation request"
+// @Success      200      {object}  map[string]interface{}  "Generated text"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /initialization/extract/fabri-text [post]
@@ -2556,12 +2558,12 @@ var tagOptions = []string{
 }
 
 // FabriTag godoc
-// @Summary      生成随机标签
-// @Description  随机生成一组标签
-// @Tags         初始化
+// @Summary      Generate random tags
+// @Description  Randomly generate a set of tags
+// @Tags         Initialization
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "生成的标签"
+// @Success      200  {object}  map[string]interface{}  "Generated tags"
 // @Router       /initialization/extract/fabri-tag [post]
 func (h *InitializationHandler) FabriTag(c *gin.Context) {
 	tagRandom := RandomSelect(tagOptions, rand.Intn(len(tagOptions)-1)+1)

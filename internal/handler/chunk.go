@@ -38,15 +38,15 @@ func NewChunkHandler(service interfaces.ChunkService, kgService interfaces.Knowl
 }
 
 // GetChunkByIDOnly godoc
-// @Summary      通过ID获取分块
-// @Description  仅通过分块ID获取分块详情（不需要knowledge_id）；支持共享知识库下的分块访问
-// @Tags         分块管理
+// @Summary      Get a chunk by ID
+// @Description  Gets chunk details using only the chunk ID (no knowledge_id required); supports chunk access under shared knowledge bases
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "分块ID"
-// @Success      200  {object}  map[string]interface{}  "分块详情"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
-// @Failure      404  {object}  errors.AppError         "分块不存在"
+// @Param        id   path      string  true  "Chunk ID"
+// @Success      200  {object}  map[string]interface{}  "Chunk details"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404  {object}  errors.AppError         "Chunk not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/by-id/{id} [get]
@@ -83,16 +83,16 @@ func (h *ChunkHandler) GetChunkByIDOnly(c *gin.Context) {
 }
 
 // ListKnowledgeChunks godoc
-// @Summary      获取知识分块列表
-// @Description  获取指定知识下的所有分块列表，支持分页
-// @Tags         分块管理
+// @Summary      Get the list of knowledge chunks
+// @Description  Gets the list of all chunks under the specified knowledge item, with pagination support
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        knowledge_id  path      string  true   "知识ID"
-// @Param        page          query     int     false  "页码"  default(1)
-// @Param        page_size     query     int     false  "每页数量"  default(10)
-// @Success      200           {object}  map[string]interface{}  "分块列表"
-// @Failure      400           {object}  errors.AppError         "请求参数错误"
+// @Param        knowledge_id  path      string  true   "Knowledge ID"
+// @Param        page          query     int     false  "Page number"  default(1)
+// @Param        page_size     query     int     false  "Page size"  default(10)
+// @Success      200           {object}  map[string]interface{}  "Chunk list"
+// @Failure      400           {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/{knowledge_id} [get]
@@ -194,17 +194,17 @@ func (h *ChunkHandler) fetchChunkAndVerifyOwnership(c *gin.Context) (*types.Chun
 }
 
 // UpdateChunk godoc
-// @Summary      更新分块
-// @Description  更新指定分块的内容和属性
-// @Tags         分块管理
+// @Summary      Update a chunk
+// @Description  Updates the content and attributes of the specified chunk
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        knowledge_id  path      string              true  "知识ID"
-// @Param        id            path      string              true  "分块ID"
-// @Param        request       body      UpdateChunkRequest  true  "更新请求"
-// @Success      200           {object}  map[string]interface{}  "更新后的分块"
-// @Failure      400           {object}  errors.AppError         "请求参数错误"
-// @Failure      404           {object}  errors.AppError         "分块不存在"
+// @Param        knowledge_id  path      string              true  "Knowledge ID"
+// @Param        id            path      string              true  "Chunk ID"
+// @Param        request       body      UpdateChunkRequest  true  "Update request"
+// @Success      200           {object}  map[string]interface{}  "Updated chunk"
+// @Failure      400           {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404           {object}  errors.AppError         "Chunk not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/{knowledge_id}/{id} [put]
@@ -343,16 +343,16 @@ func (h *ChunkHandler) RegenerateGeneratedQuestions(c *gin.Context) {
 }
 
 // DeleteChunk godoc
-// @Summary      删除分块
-// @Description  删除指定的分块
-// @Tags         分块管理
+// @Summary      Delete a chunk
+// @Description  Deletes the specified chunk
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        knowledge_id  path      string  true  "知识ID"
-// @Param        id            path      string  true  "分块ID"
-// @Success      200           {object}  map[string]interface{}  "删除成功"
-// @Failure      400           {object}  errors.AppError         "请求参数错误"
-// @Failure      404           {object}  errors.AppError         "分块不存在"
+// @Param        knowledge_id  path      string  true  "Knowledge ID"
+// @Param        id            path      string  true  "Chunk ID"
+// @Success      200           {object}  map[string]interface{}  "Deletion succeeded"
+// @Failure      400           {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404           {object}  errors.AppError         "Chunk not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/{knowledge_id}/{id} [delete]
@@ -379,14 +379,14 @@ func (h *ChunkHandler) DeleteChunk(c *gin.Context) {
 }
 
 // DeleteChunksByKnowledgeID godoc
-// @Summary      删除知识下所有分块
-// @Description  删除指定知识下的所有分块
-// @Tags         分块管理
+// @Summary      Delete all chunks under a knowledge item
+// @Description  Deletes all chunks under the specified knowledge item
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        knowledge_id  path      string  true  "知识ID"
-// @Success      200           {object}  map[string]interface{}  "删除成功"
-// @Failure      400           {object}  errors.AppError         "请求参数错误"
+// @Param        knowledge_id  path      string  true  "Knowledge ID"
+// @Success      200           {object}  map[string]interface{}  "Deletion succeeded"
+// @Failure      400           {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/{knowledge_id} [delete]
@@ -414,16 +414,16 @@ func (h *ChunkHandler) DeleteChunksByKnowledgeID(c *gin.Context) {
 }
 
 // DeleteGeneratedQuestion godoc
-// @Summary      删除生成的问题
-// @Description  删除分块中生成的问题
-// @Tags         分块管理
+// @Summary      Delete a generated question
+// @Description  Deletes a generated question within a chunk
+// @Tags         Chunk Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                       true  "分块ID"
-// @Param        request  body      object{question_id=string}   true  "问题ID"
-// @Success      200      {object}  map[string]interface{}       "删除成功"
-// @Failure      400      {object}  errors.AppError              "请求参数错误"
-// @Failure      404      {object}  errors.AppError              "分块不存在"
+// @Param        id       path      string                       true  "Chunk ID"
+// @Param        request  body      object{question_id=string}   true  "Question ID"
+// @Success      200      {object}  map[string]interface{}       "Deletion succeeded"
+// @Failure      400      {object}  errors.AppError              "Invalid request parameters"
+// @Failure      404      {object}  errors.AppError              "Chunk not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunks/by-id/{id}/questions [delete]

@@ -295,21 +295,21 @@ func (h *KnowledgeHandler) enqueueKnowledgeListReparse(
 }
 
 // CreateKnowledgeFromFile godoc
-// @Summary      从文件创建知识
-// @Description  上传文件并创建知识条目
-// @Tags         知识管理
+// @Summary      Create knowledge from a file
+// @Description  Upload a file and create a knowledge entry
+// @Tags         Knowledge Management
 // @Accept       multipart/form-data
 // @Produce      json
-// @Param        id                path      string  true   "知识库ID"
-// @Param        file              formData  file    true   "上传的文件"
-// @Param        fileName          formData  string  false  "自定义文件名"
-// @Param        metadata          formData  string  false  "元数据JSON"
-// @Param        enable_multimodel formData  bool    false  "启用多模态处理"
-// @Param        tag_ids       formData  string  false  "分类ID列表，逗号分隔"
-// @Param        process_config    formData  string  false  "处理配置JSON（KnowledgeProcessOverrides）"
-// @Success      200               {object}  map[string]interface{}  "创建的知识"
-// @Failure      400               {object}  errors.AppError         "请求参数错误"
-// @Failure      409               {object}  map[string]interface{}  "文件重复"
+// @Param        id                path      string  true   "Knowledge base ID"
+// @Param        file              formData  file    true   "The file to upload"
+// @Param        fileName          formData  string  false  "Custom file name"
+// @Param        metadata          formData  string  false  "Metadata JSON"
+// @Param        enable_multimodel formData  bool    false  "Enable multimodal processing"
+// @Param        tag_ids       formData  string  false  "Category ID list, comma-separated"
+// @Param        process_config    formData  string  false  "Processing config JSON (KnowledgeProcessOverrides)"
+// @Success      200               {object}  map[string]interface{}  "Created knowledge"
+// @Failure      400               {object}  errors.AppError         "Invalid request parameters"
+// @Failure      409               {object}  map[string]interface{}  "Duplicate file"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge/file [post]
@@ -439,16 +439,16 @@ func (h *KnowledgeHandler) CreateKnowledgeFromFile(c *gin.Context) {
 }
 
 // CreateKnowledgeFromURL godoc
-// @Summary      从URL创建知识
-// @Description  从指定URL抓取内容并创建知识条目。当提供 file_name/file_type 或 URL 路径含已知文件扩展名时，自动切换为文件下载模式
-// @Tags         知识管理
+// @Summary      Create knowledge from a URL
+// @Description  Fetch content from the specified URL and create a knowledge entry. When file_name/file_type is provided, or the URL path contains a known file extension, the handler automatically switches to file-download mode
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string  true  "知识库ID"
-// @Param        request  body      object{url=string,file_name=string,file_type=string,enable_multimodel=bool,title=string,tag_ids=[]string}  true  "URL请求"
-// @Success      201      {object}  map[string]interface{}  "创建的知识"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
-// @Failure      409      {object}  map[string]interface{}  "URL重复"
+// @Param        id       path      string  true  "Knowledge base ID"
+// @Param        request  body      object{url=string,file_name=string,file_type=string,enable_multimodel=bool,title=string,tag_ids=[]string}  true  "URL request"
+// @Success      201      {object}  map[string]interface{}  "Created knowledge"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
+// @Failure      409      {object}  map[string]interface{}  "Duplicate URL"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge/url [post]
@@ -537,15 +537,15 @@ func (h *KnowledgeHandler) CreateKnowledgeFromURL(c *gin.Context) {
 }
 
 // CreateManualKnowledge godoc
-// @Summary      手工创建知识
-// @Description  手工录入Markdown格式的知识内容
-// @Tags         知识管理
+// @Summary      Manually create knowledge
+// @Description  Manually enter Markdown-formatted knowledge content
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                       true  "知识库ID"
-// @Param        request  body      types.ManualKnowledgePayload true  "手工知识内容"
-// @Success      200      {object}  map[string]interface{}       "创建的知识"
-// @Failure      400      {object}  errors.AppError              "请求参数错误"
+// @Param        id       path      string                       true  "Knowledge base ID"
+// @Param        request  body      types.ManualKnowledgePayload true  "Manual knowledge content"
+// @Success      200      {object}  map[string]interface{}       "Created knowledge"
+// @Failure      400      {object}  errors.AppError              "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge/manual [post]
@@ -596,15 +596,15 @@ func (h *KnowledgeHandler) CreateManualKnowledge(c *gin.Context) {
 }
 
 // GetKnowledge godoc
-// @Summary      获取知识详情
-// @Description  根据ID获取知识条目详情
-// @Tags         知识管理
+// @Summary      Get knowledge details
+// @Description  Get details of a knowledge entry by ID
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识ID"
-// @Success      200  {object}  map[string]interface{}  "知识详情"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
-// @Failure      404  {object}  errors.AppError         "知识不存在"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Success      200  {object}  map[string]interface{}  "Knowledge details"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
+// @Failure      404  {object}  errors.AppError         "Knowledge not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id} [get]
@@ -643,13 +643,13 @@ func (h *KnowledgeHandler) GetKnowledge(c *gin.Context) {
 }
 
 // GetKnowledgeSpans godoc
-// @Summary      获取知识文档解析的 Span 树（含历史尝试）
-// @Description  返回该知识在解析流水线的 trace tree（root → stage → subspan）：每段状态、耗时、input/output、错误码、langfuse_trace_id。支持 ?attempt=N 查看历史尝试；不传则返回最新尝试。前端用于渲染时间线 + 多模态/embedding 子节点 + 一键跳转 Langfuse。
-// @Tags         知识管理
+// @Summary      Get the span tree of a knowledge document's parsing run (including historical attempts)
+// @Description  Returns the trace tree (root → stage → subspan) for this knowledge item's parsing pipeline: each segment's status, duration, input/output, error code, and langfuse_trace_id. Supports ?attempt=N to view a historical attempt; if omitted, returns the latest attempt. Used by the frontend to render the timeline plus multimodal/embedding child nodes and a one-click jump to Langfuse.
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id        path   string  true   "知识ID"
-// @Param        attempt   query  int     false  "指定尝试号；省略=最新"
+// @Param        id        path   string  true   "Knowledge ID"
+// @Param        attempt   query  int     false  "The attempt number to view; omit for the latest"
 // @Success      200       {object}  map[string]interface{}
 // @Router       /api/v1/knowledge/{id}/spans [get]
 //
@@ -910,25 +910,25 @@ func buildSpanTree(knowledgeID string, attempt int, rows []types.KnowledgeProces
 }
 
 // ListKnowledge godoc
-// @Summary      获取知识列表
-// @Description  获取知识库下的知识列表，支持分页和筛选
-// @Tags         知识管理
+// @Summary      Get the knowledge list
+// @Description  Get the list of knowledge entries under a knowledge base, with pagination and filtering support
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id         path      string  true   "知识库ID"
-// @Param        page       query     int     false  "页码"
-// @Param        page_size  query     int     false  "每页数量"
-// @Param        tag_ids       query     string  false  "标签ID筛选，逗号分隔（OR语义）"
-// @Param        keyword       query     string  false  "关键词搜索"
-// @Param        file_type     query     string  false  "文件类型筛选"
-// @Param        parse_status  query     string  false  "解析状态筛选 (pending/processing/completed/failed)"
-// @Param        source        query     string  false  "来源/渠道筛选 (web/api/feishu/notion/yuque/wechat/...，或 manual/url 按 type 过滤)"
-// @Param        start_time    query     string  false  "更新时间起点，RFC3339 格式"
-// @Param        end_time      query     string  false  "更新时间终点，RFC3339 格式"
-// @Param        folder_path      query     string  false  "文件夹路径筛选，空字符串表示知识库根目录；不传该参数则不按文件夹过滤"
-// @Param        folder_recursive query     bool    false  "为 true 时同时返回子文件夹内的文档"
-// @Success      200        {object}  map[string]interface{}  "知识列表"
-// @Failure      400        {object}  errors.AppError         "请求参数错误"
+// @Param        id         path      string  true   "Knowledge base ID"
+// @Param        page       query     int     false  "Page number"
+// @Param        page_size  query     int     false  "Number of items per page"
+// @Param        tag_ids       query     string  false  "Filter by tag ID, comma-separated (OR semantics)"
+// @Param        keyword       query     string  false  "Keyword search"
+// @Param        file_type     query     string  false  "Filter by file type"
+// @Param        parse_status  query     string  false  "Filter by parse status (pending/processing/completed/failed)"
+// @Param        source        query     string  false  "Filter by source/channel (web/api/feishu/notion/yuque/wechat/..., or filter by type via manual/url)"
+// @Param        start_time    query     string  false  "Update time range start, RFC3339 format"
+// @Param        end_time      query     string  false  "Update time range end, RFC3339 format"
+// @Param        folder_path      query     string  false  "Filter by folder path; an empty string means the knowledge base root; if omitted, no folder filtering is applied"
+// @Param        folder_recursive query     bool    false  "When true, also returns documents within subfolders"
+// @Success      200        {object}  map[string]interface{}  "Knowledge list"
+// @Failure      400        {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge [get]
@@ -1031,14 +1031,14 @@ func (h *KnowledgeHandler) ListKnowledge(c *gin.Context) {
 }
 
 // ListKnowledgeFolders godoc
-// @Summary      获取知识库文件夹目录树
-// @Description  返回知识库内由文件夹上传形成的目录树，包含每个文件夹的直接文档数与含子目录的总数
-// @Tags         知识管理
+// @Summary      Get the knowledge base folder tree
+// @Description  Returns the directory tree formed by folder uploads within the knowledge base, including each folder's direct document count and its total including subfolders
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识库ID"
-// @Success      200  {object}  map[string]interface{}  "目录树"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
+// @Param        id   path      string  true  "Knowledge base ID"
+// @Success      200  {object}  map[string]interface{}  "Directory tree"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge/folders [get]
@@ -1080,15 +1080,15 @@ type MoveKnowledgeToFolderRequest struct {
 }
 
 // MoveKnowledgeToFolder godoc
-// @Summary      移动知识到文件夹
-// @Description  批量修改知识条目所属文件夹。文件夹由路径推导而来，因此目标路径不存在时会自动创建；空路径表示知识库顶层。仅调整归类，不会重新解析文档
-// @Tags         知识管理
+// @Summary      Move knowledge into a folder
+// @Description  Batch-update the folder that knowledge entries belong to. Folders are derived from paths, so a target path that doesn't exist yet is created automatically; an empty path means the knowledge base top level. This only adjusts the classification and does not re-parse documents
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      MoveKnowledgeToFolderRequest  true  "移动请求"
-// @Success      200      {object}  map[string]interface{}        "移动成功"
-// @Failure      400      {object}  errors.AppError               "请求参数错误"
-// @Failure      403      {object}  errors.AppError               "权限不足"
+// @Param        request  body      MoveKnowledgeToFolderRequest  true  "Move request"
+// @Success      200      {object}  map[string]interface{}        "Move successful"
+// @Failure      400      {object}  errors.AppError               "Invalid request parameters"
+// @Failure      403      {object}  errors.AppError               "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/folder [post]
@@ -1154,16 +1154,16 @@ type RenameKnowledgeFolderRequest struct {
 }
 
 // RenameKnowledgeFolder godoc
-// @Summary      重命名或移动文件夹
-// @Description  把一个文件夹及其所有子目录改到新路径。目标路径已存在时两个文件夹合并；不能移动到自身子目录下
-// @Tags         知识管理
+// @Summary      Rename or move a folder
+// @Description  Move a folder and all its subdirectories to a new path. If the target path already exists, the two folders are merged; a folder cannot be moved into its own subdirectory
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                        true  "知识库ID"
-// @Param        request  body      RenameKnowledgeFolderRequest  true  "重命名请求"
-// @Success      200      {object}  map[string]interface{}        "重命名成功"
-// @Failure      400      {object}  errors.AppError               "请求参数错误"
-// @Failure      403      {object}  errors.AppError               "权限不足"
+// @Param        id       path      string                        true  "Knowledge base ID"
+// @Param        request  body      RenameKnowledgeFolderRequest  true  "Rename request"
+// @Success      200      {object}  map[string]interface{}        "Rename successful"
+// @Failure      400      {object}  errors.AppError               "Invalid request parameters"
+// @Failure      403      {object}  errors.AppError               "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge/folders [put]
@@ -1276,15 +1276,15 @@ func (h *KnowledgeHandler) requireKnowledgeInKB(
 }
 
 // DeleteKnowledge godoc
-// @Summary      删除知识
-// @Description  根据ID异步删除知识条目。请求会被入队到与批量删除相同的异步管道（asynq）；
-// @Description  接口返回 200 仅表示任务已提交（响应 data.task_id 为任务 ID），实际删除由后台 worker 完成。
-// @Tags         知识管理
+// @Summary      Delete knowledge
+// @Description  Asynchronously delete a knowledge entry by ID. The request is enqueued into the same async pipeline (asynq) used for batch deletion;
+// @Description  a 200 response only means the task has been submitted (the response's data.task_id is the task ID) — the actual deletion is completed by a background worker.
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识ID"
-// @Success      200  {object}  map[string]interface{}  "任务已提交，返回 task_id"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Success      200  {object}  map[string]interface{}  "Task submitted, returns task_id"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id} [delete]
@@ -1341,15 +1341,15 @@ type BatchDeleteKnowledgeRequest struct {
 }
 
 // BatchDeleteKnowledge godoc
-// @Summary      批量删除知识
-// @Description  按 ID 列表批量删除单个知识库下的多个知识条目
-// @Tags         知识管理
+// @Summary      Batch delete knowledge
+// @Description  Batch-delete multiple knowledge entries within a single knowledge base by ID list
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      BatchDeleteKnowledgeRequest  true  "批量删除请求"
-// @Success      200      {object}  map[string]interface{}       "删除成功"
-// @Failure      400      {object}  errors.AppError              "请求参数错误"
-// @Failure      403      {object}  errors.AppError              "权限不足"
+// @Param        request  body      BatchDeleteKnowledgeRequest  true  "Batch delete request"
+// @Success      200      {object}  map[string]interface{}       "Deleted successfully"
+// @Failure      400      {object}  errors.AppError              "Invalid request parameters"
+// @Failure      403      {object}  errors.AppError              "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/batch-delete [post]
@@ -1432,15 +1432,15 @@ func (h *KnowledgeHandler) BatchDeleteKnowledge(c *gin.Context) {
 }
 
 // ClearKnowledgeBaseContents godoc
-// @Summary      清空知识库内容
-// @Description  删除知识库下的所有知识条目（异步任务）。知识库本身保留，仅清空其中的内容
-// @Tags         知识管理
+// @Summary      Clear knowledge base contents
+// @Description  Delete all knowledge entries within a knowledge base (async task). The knowledge base itself is retained; only its contents are cleared
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识库ID"
-// @Success      200  {object}  map[string]interface{}  "清空任务已提交"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
-// @Failure      403  {object}  errors.AppError         "权限不足"
+// @Param        id   path      string  true  "Knowledge base ID"
+// @Success      200  {object}  map[string]interface{}  "Clear task submitted"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
+// @Failure      403  {object}  errors.AppError         "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge-bases/{id}/knowledge [delete]
@@ -1503,14 +1503,14 @@ func (h *KnowledgeHandler) ClearKnowledgeBaseContents(c *gin.Context) {
 }
 
 // DownloadKnowledgeFile godoc
-// @Summary      下载知识文件
-// @Description  下载知识条目关联的原始文件
-// @Tags         知识管理
+// @Summary      Download a knowledge file
+// @Description  Download the original file associated with a knowledge entry
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      application/octet-stream
-// @Param        id   path      string  true  "知识ID"
-// @Success      200  {file}    file    "文件内容"
-// @Failure      400  {object}  errors.AppError  "请求参数错误"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Success      200  {file}    file    "File content"
+// @Failure      400  {object}  errors.AppError  "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id}/download [get]
@@ -1579,14 +1579,14 @@ func mimeTypeByExt(filename string) string {
 }
 
 // PreviewKnowledgeFile godoc
-// @Summary      预览知识文件
-// @Description  返回知识条目关联的原始文件，Content-Type 根据文件类型设置，用于浏览器内嵌预览
-// @Tags         知识管理
+// @Summary      Preview a knowledge file
+// @Description  Returns the original file associated with a knowledge entry, with Content-Type set according to the file type, for inline preview in the browser
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      application/pdf,image/jpeg,image/png,text/plain
-// @Param        id   path      string  true  "知识ID"
-// @Success      200  {file}    file    "文件内容"
-// @Failure      400  {object}  errors.AppError  "请求参数错误"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Success      200  {file}    file    "File content"
+// @Failure      400  {object}  errors.AppError  "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id}/preview [get]
@@ -1641,16 +1641,16 @@ type GetKnowledgeBatchRequest struct {
 }
 
 // GetKnowledgeBatch godoc
-// @Summary      批量获取知识
-// @Description  根据ID列表批量获取知识条目。可选 kb_id：指定时按该知识库校验权限并用于共享知识库的空间解析；可选 agent_id：使用共享智能体时传此参数，后端按智能体所属空间查询（用于刷新后恢复共享知识库下的文件）
-// @Tags         知识管理
+// @Summary      Batch get knowledge
+// @Description  Batch-fetch knowledge entries by ID list. Optional kb_id: when specified, permissions are checked against that knowledge base and it's used to resolve the space for shared knowledge bases; optional agent_id: pass this when using a shared agent, and the backend queries by the agent's owning space (used to restore files under a shared knowledge base after a refresh)
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        ids       query     []string  true   "知识ID列表"
-// @Param        kb_id     query     string   false  "可选，知识库ID（用于共享知识库时指定范围）"
-// @Param        agent_id  query     string   false  "可选，共享智能体ID（用于按智能体空间批量拉取文件详情）"
-// @Success      200       {object}  map[string]interface{}  "知识列表"
-// @Failure      400       {object}  errors.AppError        "请求参数错误"
+// @Param        ids       query     []string  true   "Knowledge ID list"
+// @Param        kb_id     query     string   false  "Optional, knowledge base ID (used to scope shared knowledge bases)"
+// @Param        agent_id  query     string   false  "Optional, shared agent ID (used to batch-fetch file details scoped to the agent's space)"
+// @Success      200       {object}  map[string]interface{}  "Knowledge list"
+// @Failure      400       {object}  errors.AppError        "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/batch [get]
@@ -1787,15 +1787,15 @@ type UpdateKnowledgeRequest struct {
 }
 
 // UpdateKnowledge godoc
-// @Summary      更新知识
-// @Description  部分更新知识条目（标题/描述/自定义元数据）；未传字段保持不变，显式传空 description 可清空摘要
-// @Tags         知识管理
+// @Summary      Update knowledge
+// @Description  Partially update a knowledge entry (title/description/custom metadata); fields not provided are left unchanged, and explicitly passing an empty description clears the summary
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                   true  "知识ID"
-// @Param        request  body      UpdateKnowledgeRequest   true  "更新字段（均可选）"
-// @Success      200      {object}  map[string]interface{}  "更新成功"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        id       path      string                   true  "Knowledge ID"
+// @Param        request  body      UpdateKnowledgeRequest   true  "Fields to update (all optional)"
+// @Success      200      {object}  map[string]interface{}  "Updated successfully"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id} [put]
@@ -1884,15 +1884,15 @@ func (h *KnowledgeHandler) RegenerateKnowledgeSummary(c *gin.Context) {
 }
 
 // UpdateManualKnowledge godoc
-// @Summary      更新手工知识
-// @Description  更新手工录入的Markdown知识内容
-// @Tags         知识管理
+// @Summary      Update manual knowledge
+// @Description  Update manually entered Markdown knowledge content
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                       true  "知识ID"
-// @Param        request  body      types.ManualKnowledgePayload true  "手工知识内容"
-// @Success      200      {object}  map[string]interface{}       "更新后的知识"
-// @Failure      400      {object}  errors.AppError              "请求参数错误"
+// @Param        id       path      string                       true  "Knowledge ID"
+// @Param        request  body      types.ManualKnowledgePayload true  "Manual knowledge content"
+// @Success      200      {object}  map[string]interface{}       "Updated knowledge"
+// @Failure      400      {object}  errors.AppError              "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/manual/{id} [put]
@@ -1941,16 +1941,16 @@ func (h *KnowledgeHandler) UpdateManualKnowledge(c *gin.Context) {
 }
 
 // ReparseKnowledge godoc
-// @Summary      重新解析知识
-// @Description  删除知识中现有的文档内容并重新解析，使用异步任务方式处理
-// @Tags         知识管理
+// @Summary      Reparse knowledge
+// @Description  Delete the existing document content within the knowledge entry and re-parse it, processed as an async task
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识ID"
-// @Param        body body      object  false  "可选的处理配置覆盖：{\"process_config\": KnowledgeProcessOverrides}"
-// @Success      200  {object}  map[string]interface{}  "重新解析任务已提交"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
-// @Failure      403  {object}  errors.AppError         "权限不足"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Param        body body      object  false  "Optional processing config override: {\"process_config\": KnowledgeProcessOverrides}"
+// @Success      200  {object}  map[string]interface{}  "Reparse task submitted"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
+// @Failure      403  {object}  errors.AppError         "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id}/reparse [post]
@@ -2010,16 +2010,16 @@ func (h *KnowledgeHandler) ReparseKnowledge(c *gin.Context) {
 }
 
 // CancelKnowledgeParse godoc
-// @Summary      取消知识解析
-// @Description  取消进行中的知识解析任务。当前已写入的 chunk / 索引保留，可通过 reparse 接口重新触发解析。已完成 / 已失败 / 删除中的知识不支持取消。
-// @Tags         知识管理
+// @Summary      Cancel knowledge parsing
+// @Description  Cancel an in-progress knowledge parsing task. Chunks/indexes already written are retained, and parsing can be re-triggered via the reparse endpoint. Knowledge that is completed, failed, or being deleted cannot be canceled.
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "知识ID"
-// @Success      200  {object}  map[string]interface{}  "取消已提交"
-// @Failure      400  {object}  errors.AppError         "状态不支持取消"
-// @Failure      403  {object}  errors.AppError         "权限不足"
-// @Failure      404  {object}  errors.AppError         "知识不存在"
+// @Param        id   path      string  true  "Knowledge ID"
+// @Success      200  {object}  map[string]interface{}  "Cancellation submitted"
+// @Failure      400  {object}  errors.AppError         "Status does not support cancellation"
+// @Failure      403  {object}  errors.AppError         "Insufficient permissions"
+// @Failure      404  {object}  errors.AppError         "Knowledge not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/{id}/cancel-parse [post]
@@ -2068,14 +2068,14 @@ type knowledgeTagBatchRequest struct {
 }
 
 // UpdateKnowledgeTagBatch godoc
-// @Summary      批量更新知识标签
-// @Description  批量更新知识条目的标签。可选 kb_id：指定时按该知识库校验编辑权限并用于共享知识库的空间解析
-// @Tags         知识管理
+// @Summary      Batch update knowledge tags
+// @Description  Batch-update tags on knowledge entries. Optional kb_id: when specified, edit permission is checked against that knowledge base and it's used to resolve the space for shared knowledge bases
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      object  true  "标签更新请求（updates 必填，kb_id 可选）"
-// @Success      200      {object}  map[string]interface{}  "更新成功"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      object  true  "Tag update request (updates is required, kb_id is optional)"
+// @Success      200      {object}  map[string]interface{}  "Updated successfully"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/tags [put]
@@ -2138,16 +2138,16 @@ func (h *KnowledgeHandler) UpdateKnowledgeTagBatch(c *gin.Context) {
 }
 
 // UpdateImageInfo godoc
-// @Summary      更新图像信息
-// @Description  更新知识分块的图像信息
-// @Tags         知识管理
+// @Summary      Update image info
+// @Description  Update the image info for a knowledge chunk
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        id        path      string  true  "知识ID"
-// @Param        chunk_id  path      string  true  "分块ID"
-// @Param        request   body      object{image_info=string}  true  "图像信息"
-// @Success      200       {object}  map[string]interface{}     "更新成功"
-// @Failure      400       {object}  errors.AppError            "请求参数错误"
+// @Param        id        path      string  true  "Knowledge ID"
+// @Param        chunk_id  path      string  true  "Chunk ID"
+// @Param        request   body      object{image_info=string}  true  "Image info"
+// @Success      200       {object}  map[string]interface{}     "Updated successfully"
+// @Failure      400       {object}  errors.AppError            "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/image/{id}/{chunk_id} [put]
@@ -2414,14 +2414,14 @@ type MoveKnowledgeResponse struct {
 // MoveKnowledge moves knowledge items from one knowledge base to another (async task).
 //
 // MoveKnowledge godoc
-// @Summary      移动知识到其他知识库
-// @Description  将一条或多条知识从源知识库移动到目标知识库（异步），返回任务 ID 用于查询进度
-// @Tags         知识
+// @Summary      Move knowledge to another knowledge base
+// @Description  Move one or more knowledge entries from a source knowledge base to a target knowledge base (async), returning a task ID for progress tracking
+// @Tags         Knowledge
 // @Accept       json
 // @Produce      json
 // @Param        request  body      handler.MoveKnowledgeRequest  true  "{source_kb_id, target_kb_id, knowledge_ids}"
-// @Success      200      {object}  handler.MoveKnowledgeResponse  "任务信息"
-// @Failure      400      {object}  errors.AppError                "请求参数错误"
+// @Success      200      {object}  handler.MoveKnowledgeResponse  "Task info"
+// @Failure      400      {object}  errors.AppError                "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/move [post]
@@ -2597,13 +2597,13 @@ func (h *KnowledgeHandler) MoveKnowledge(c *gin.Context) {
 // GetKnowledgeMoveProgress retrieves the progress of a knowledge move task.
 //
 // GetKnowledgeMoveProgress godoc
-// @Summary      获取知识移动进度
-// @Description  按任务 ID 查询移动进度
-// @Tags         知识
+// @Summary      Get knowledge move progress
+// @Description  Query move progress by task ID
+// @Tags         Knowledge
 // @Produce      json
-// @Param        task_id  path      string                       true  "移动任务 ID"
-// @Success      200      {object}  types.KnowledgeMoveProgress  "进度信息"
-// @Failure      404      {object}  errors.AppError              "任务不存在"
+// @Param        task_id  path      string                       true  "Move task ID"
+// @Success      200      {object}  types.KnowledgeMoveProgress  "Progress info"
+// @Failure      404      {object}  errors.AppError              "Task not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/move/progress/{task_id} [get]
@@ -2707,15 +2707,15 @@ type batchReparseKnowledgeRequest struct {
 }
 
 // BatchReparseKnowledge godoc
-// @Summary      批量重新解析知识
-// @Description  按 ID 列表批量重新解析单个知识库下的多个知识条目
-// @Tags         知识管理
+// @Summary      Batch reparse knowledge
+// @Description  Batch-reparse multiple knowledge entries within a single knowledge base by ID list
+// @Tags         Knowledge Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      batchReparseKnowledgeRequest  true  "批量重解析请求"
-// @Success      200      {object}  map[string]interface{}        "任务已提交"
-// @Failure      400      {object}  errors.AppError               "请求参数错误"
-// @Failure      403      {object}  errors.AppError               "权限不足"
+// @Param        request  body      batchReparseKnowledgeRequest  true  "Batch reparse request"
+// @Success      200      {object}  map[string]interface{}        "Task submitted"
+// @Failure      400      {object}  errors.AppError               "Invalid request parameters"
+// @Failure      403      {object}  errors.AppError               "Insufficient permissions"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /knowledge/batch-reparse [post]

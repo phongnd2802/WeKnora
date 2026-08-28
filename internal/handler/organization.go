@@ -59,12 +59,12 @@ func NewOrganizationHandler(
 }
 
 // CreateOrganization creates a new organization
-// @Summary      创建组织
-// @Description  创建新的组织，创建者自动成为管理员
-// @Tags         组织管理
+// @Summary      Create an organization
+// @Description  Creates a new organization; the creator automatically becomes an admin
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      types.CreateOrganizationRequest  true  "组织信息"
+// @Param        request  body      types.CreateOrganizationRequest  true  "Organization info"
 // @Success      201      {object}  map[string]interface{}
 // @Failure      400      {object}  apperrors.AppError
 // @Security     Bearer
@@ -101,11 +101,11 @@ func (h *OrganizationHandler) CreateOrganization(c *gin.Context) {
 }
 
 // GetOrganization gets an organization by ID
-// @Summary      获取组织详情
-// @Description  根据ID获取组织详情
-// @Tags         组织管理
+// @Summary      Get organization details
+// @Description  Gets organization details by ID
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id   path      string  true  "组织ID"
+// @Param        id   path      string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      404  {object}  apperrors.AppError
 // @Security     Bearer
@@ -147,9 +147,9 @@ func (h *OrganizationHandler) GetOrganization(c *gin.Context) {
 
 // ListMyOrganizations lists organizations that the current tenant belongs to.
 // Response includes resource_counts (per-org KB/agent counts) for list sidebar so frontend does not need a separate GET /me/resource-counts.
-// @Summary      获取我的组织列表
-// @Description  获取当前空间所属的所有组织，并附带各空间内知识库/智能体数量
-// @Tags         组织管理
+// @Summary      Get my organization list
+// @Description  Gets all organizations the current space belongs to, along with per-space knowledge base/agent counts
+// @Tags         Organization Management
 // @Produce      json
 // @Success      200  {object}  types.ListOrganizationsResponse
 // @Security     Bearer
@@ -295,13 +295,13 @@ func (h *OrganizationHandler) buildResourceCountsByOrg(ctx context.Context, orgs
 }
 
 // UpdateOrganization updates an organization
-// @Summary      更新组织
-// @Description  更新组织信息（需要管理员权限）
-// @Tags         组织管理
+// @Summary      Update an organization
+// @Description  Updates organization info (requires admin permission)
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                           true  "组织ID"
-// @Param        request  body      types.UpdateOrganizationRequest  true  "更新信息"
+// @Param        id       path      string                           true  "Organization ID"
+// @Param        request  body      types.UpdateOrganizationRequest  true  "Update info"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      403      {object}  apperrors.AppError
 // @Security     Bearer
@@ -341,10 +341,10 @@ func (h *OrganizationHandler) UpdateOrganization(c *gin.Context) {
 }
 
 // DeleteOrganization deletes an organization
-// @Summary      删除组织
-// @Description  删除组织（仅组织创建者可操作）
-// @Tags         组织管理
-// @Param        id  path  string  true  "组织ID"
+// @Summary      Delete an organization
+// @Description  Deletes an organization (only the organization creator may do this)
+// @Tags         Organization Management
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      403  {object}  apperrors.AppError
 // @Security     Bearer
@@ -369,11 +369,11 @@ func (h *OrganizationHandler) DeleteOrganization(c *gin.Context) {
 }
 
 // ListMembers lists all tenant-members of an organization
-// @Summary      获取组织成员列表
-// @Description  获取组织的所有成员（按空间）
-// @Tags         组织管理
+// @Summary      Get organization member list
+// @Description  Gets all members of an organization (by space)
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id  path  string  true  "组织ID"
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  types.ListMembersResponse
 // @Security     Bearer
 // @Router       /organizations/{id}/members [get]
@@ -438,14 +438,14 @@ func (h *OrganizationHandler) ListMembers(c *gin.Context) {
 }
 
 // UpdateMemberRole updates a tenant-member's role
-// @Summary      更新成员角色
-// @Description  更新组织成员（空间）的角色（需要管理员权限）
-// @Tags         组织管理
+// @Summary      Update member role
+// @Description  Updates the role of an organization member (space) (requires admin permission)
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        id          path      string                       true  "组织ID"
-// @Param        tenant_id   path      string                       true  "成员空间ID"
-// @Param        request     body      types.UpdateMemberRoleRequest  true  "角色信息"
+// @Param        id          path      string                       true  "Organization ID"
+// @Param        tenant_id   path      string                       true  "Member space ID"
+// @Param        request     body      types.UpdateMemberRoleRequest  true  "Role info"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      403      {object}  apperrors.AppError
 // @Security     Bearer
@@ -482,11 +482,11 @@ func (h *OrganizationHandler) UpdateMemberRole(c *gin.Context) {
 }
 
 // RemoveMember removes a tenant-member from an organization
-// @Summary      移除成员
-// @Description  从组织中移除成员空间（需要管理员权限）
-// @Tags         组织管理
-// @Param        id         path  string  true  "组织ID"
-// @Param        tenant_id  path  string  true  "成员空间ID"
+// @Summary      Remove a member
+// @Description  Removes a member space from the organization (requires admin permission)
+// @Tags         Organization Management
+// @Param        id         path  string  true  "Organization ID"
+// @Param        tenant_id  path  string  true  "Member space ID"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      403      {object}  apperrors.AppError
 // @Security     Bearer
@@ -517,11 +517,11 @@ func (h *OrganizationHandler) RemoveMember(c *gin.Context) {
 }
 
 // GenerateInviteCode generates a new invite code
-// @Summary      生成邀请码
-// @Description  生成新的组织邀请码（需要管理员权限）
-// @Tags         组织管理
+// @Summary      Generate invite code
+// @Description  Generates a new organization invite code (requires admin permission)
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id  path  string  true  "组织ID"
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      403  {object}  apperrors.AppError
 // @Security     Bearer
@@ -552,11 +552,11 @@ func (h *OrganizationHandler) GenerateInviteCode(c *gin.Context) {
 }
 
 // PreviewByInviteCode previews organization info by invite code (without joining)
-// @Summary      通过邀请码预览组织
-// @Description  通过邀请码获取组织基本信息（不加入）
-// @Tags         组织管理
+// @Summary      Preview organization by invite code
+// @Description  Gets basic organization info via an invite code (without joining)
+// @Tags         Organization Management
 // @Produce      json
-// @Param        code  path  string  true  "邀请码"
+// @Param        code  path  string  true  "Invite code"
 // @Success      200   {object}  map[string]interface{}
 // @Failure      404   {object}  apperrors.AppError
 // @Security     Bearer
@@ -607,12 +607,12 @@ func (h *OrganizationHandler) PreviewByInviteCode(c *gin.Context) {
 }
 
 // JoinByInviteCode joins an organization by invite code
-// @Summary      通过邀请码加入组织
-// @Description  使用邀请码加入组织
-// @Tags         组织管理
+// @Summary      Join organization by invite code
+// @Description  Joins an organization using an invite code
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      types.JoinOrganizationRequest  true  "邀请码"
+// @Param        request  body      types.JoinOrganizationRequest  true  "Invite code"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      404      {object}  apperrors.AppError
 // @Security     Bearer
@@ -648,12 +648,12 @@ func (h *OrganizationHandler) JoinByInviteCode(c *gin.Context) {
 }
 
 // SubmitJoinRequest submits a join request for organizations that require approval
-// @Summary      提交加入申请
-// @Description  对需要审核的组织提交加入申请
-// @Tags         组织管理
+// @Summary      Submit a join request
+// @Description  Submits a join request for organizations that require approval
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      types.SubmitJoinRequestRequest  true  "申请信息"
+// @Param        request  body      types.SubmitJoinRequestRequest  true  "Request info"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      400      {object}  apperrors.AppError
 // @Security     Bearer
@@ -721,12 +721,12 @@ func (h *OrganizationHandler) SubmitJoinRequest(c *gin.Context) {
 }
 
 // SearchOrganizations returns searchable (discoverable) organizations
-// @Summary      搜索可加入的空间
-// @Description  搜索已开放可被搜索的空间，用于发现并加入
-// @Tags         组织管理
+// @Summary      Search joinable spaces
+// @Description  Searches spaces that have opted in to being discoverable, for discovery and joining
+// @Tags         Organization Management
 // @Produce      json
-// @Param        q      query  string  false  "搜索关键词（空间名称或描述）"
-// @Param        limit  query  int     false  "返回数量限制" default(20)
+// @Param        q      query  string  false  "Search keyword (space name or description)"
+// @Param        limit  query  int     false  "Result count limit" default(20)
 // @Success      200    {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /organizations/search [get]
@@ -754,12 +754,12 @@ func (h *OrganizationHandler) SearchOrganizations(c *gin.Context) {
 }
 
 // JoinByOrganizationID joins a searchable organization by ID (no invite code)
-// @Summary      通过空间 ID 加入（可搜索空间）
-// @Description  加入已开放可被搜索的空间，无需邀请码
-// @Tags         组织管理
+// @Summary      Join by space ID (searchable spaces)
+// @Description  Joins a space that has opted in to being discoverable, without an invite code
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      types.JoinByOrganizationIDRequest  true  "空间 ID"
+// @Param        request  body      types.JoinByOrganizationIDRequest  true  "Space ID"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      403      {object}  apperrors.AppError
 // @Security     Bearer
@@ -809,13 +809,13 @@ func (h *OrganizationHandler) JoinByOrganizationID(c *gin.Context) {
 }
 
 // RequestRoleUpgrade submits a request to upgrade role in an organization
-// @Summary      申请权限升级
-// @Description  现有成员申请更高权限
-// @Tags         组织管理
+// @Summary      Request role upgrade
+// @Description  Lets an existing member request a higher permission role
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                          true  "组织ID"
-// @Param        request  body      types.RequestRoleUpgradeRequest  true  "申请信息"
+// @Param        id       path      string                          true  "Organization ID"
+// @Param        request  body      types.RequestRoleUpgradeRequest  true  "Request info"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      400      {object}  apperrors.AppError
 // @Security     Bearer
@@ -870,10 +870,10 @@ func (h *OrganizationHandler) RequestRoleUpgrade(c *gin.Context) {
 }
 
 // LeaveOrganization allows a user to leave an organization
-// @Summary      退出组织
-// @Description  退出指定组织
-// @Tags         组织管理
-// @Param        id  path  string  true  "组织ID"
+// @Summary      Leave an organization
+// @Description  Leaves the specified organization
+// @Tags         Organization Management
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      403  {object}  apperrors.AppError
 // @Security     Bearer
@@ -915,11 +915,11 @@ func (h *OrganizationHandler) LeaveOrganization(c *gin.Context) {
 }
 
 // ListJoinRequests lists pending join requests for an organization (admin only)
-// @Summary      获取待审核加入申请列表
-// @Description  获取组织的待审核加入申请（仅管理员）
-// @Tags         组织管理
+// @Summary      Get pending join request list
+// @Description  Gets an organization's pending join requests (admins only)
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id   path  string  true  "组织ID"
+// @Param        id   path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      403  {object}  apperrors.AppError
 // @Security     Bearer
@@ -982,14 +982,14 @@ func (h *OrganizationHandler) ListJoinRequests(c *gin.Context) {
 }
 
 // ReviewJoinRequest approves or rejects a join request (admin only)
-// @Summary      审核加入申请
-// @Description  通过或拒绝加入申请（仅管理员）
-// @Tags         组织管理
+// @Summary      Review a join request
+// @Description  Approves or rejects a join request (admins only)
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        id          path  string  true  "组织ID"
-// @Param        request_id  path  string  true  "申请ID"
-// @Param        request    body  types.ReviewJoinRequestRequest  true  "审核结果"
+// @Param        id          path  string  true  "Organization ID"
+// @Param        request_id  path  string  true  "Request ID"
+// @Param        request    body  types.ReviewJoinRequestRequest  true  "Review result"
 // @Success      200  {object}  map[string]interface{}
 // @Failure      403  {object}  apperrors.AppError
 // @Security     Bearer
@@ -1044,13 +1044,13 @@ func (h *OrganizationHandler) ReviewJoinRequest(c *gin.Context) {
 }
 
 // ShareKnowledgeBase shares a knowledge base to an organization
-// @Summary      共享知识库到组织
-// @Description  将知识库共享到指定组织
-// @Tags         知识库共享
+// @Summary      Share a knowledge base to an organization
+// @Description  Shares a knowledge base to the specified organization
+// @Tags         Knowledge Base Sharing
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                         true  "知识库ID"
-// @Param        request  body      types.ShareKnowledgeBaseRequest  true  "共享信息"
+// @Param        id       path      string                         true  "Knowledge base ID"
+// @Param        request  body      types.ShareKnowledgeBaseRequest  true  "Share info"
 // @Success      201      {object}  map[string]interface{}
 // @Failure      403      {object}  apperrors.AppError
 // @Security     Bearer
@@ -1086,11 +1086,11 @@ func (h *OrganizationHandler) ShareKnowledgeBase(c *gin.Context) {
 }
 
 // ListKBShares lists all shares for a knowledge base
-// @Summary      获取知识库的共享列表
-// @Description  获取知识库的所有共享记录
-// @Tags         知识库共享
+// @Summary      Get a knowledge base's share list
+// @Description  Gets all share records for a knowledge base
+// @Tags         Knowledge Base Sharing
 // @Produce      json
-// @Param        id  path  string  true  "知识库ID"
+// @Param        id  path  string  true  "Knowledge base ID"
 // @Success      200  {object}  types.ListSharesResponse
 // @Security     Bearer
 // @Router       /knowledge-bases/{id}/shares [get]
@@ -1146,14 +1146,14 @@ func (h *OrganizationHandler) ListKBShares(c *gin.Context) {
 }
 
 // UpdateSharePermission updates the permission of a share
-// @Summary      更新共享权限
-// @Description  更新知识库共享的权限级别
-// @Tags         知识库共享
+// @Summary      Update share permission
+// @Description  Updates the permission level of a knowledge base share
+// @Tags         Knowledge Base Sharing
 // @Accept       json
 // @Produce      json
-// @Param        id        path      string                          true  "知识库ID"
-// @Param        share_id  path      string                          true  "共享记录ID"
-// @Param        request   body      types.UpdateSharePermissionRequest  true  "权限信息"
+// @Param        id        path      string                          true  "Knowledge base ID"
+// @Param        share_id  path      string                          true  "Share record ID"
+// @Param        request   body      types.UpdateSharePermissionRequest  true  "Permission info"
 // @Success      200       {object}  map[string]interface{}
 // @Failure      403       {object}  apperrors.AppError
 // @Security     Bearer
@@ -1184,11 +1184,11 @@ func (h *OrganizationHandler) UpdateSharePermission(c *gin.Context) {
 }
 
 // RemoveShare removes a share
-// @Summary      取消共享
-// @Description  取消知识库的共享
-// @Tags         知识库共享
-// @Param        id        path  string  true  "知识库ID"
-// @Param        share_id  path  string  true  "共享记录ID"
+// @Summary      Cancel a share
+// @Description  Cancels the sharing of a knowledge base
+// @Tags         Knowledge Base Sharing
+// @Param        id        path  string  true  "Knowledge base ID"
+// @Param        share_id  path  string  true  "Share record ID"
 // @Success      200       {object}  map[string]interface{}
 // @Failure      403       {object}  apperrors.AppError
 // @Security     Bearer
@@ -1213,11 +1213,11 @@ func (h *OrganizationHandler) RemoveShare(c *gin.Context) {
 }
 
 // ListOrgShares lists all knowledge bases shared to a specific organization
-// @Summary      获取组织的共享知识库列表
-// @Description  获取共享到指定组织的所有知识库
-// @Tags         组织管理
+// @Summary      Get an organization's shared knowledge base list
+// @Description  Gets all knowledge bases shared to the specified organization
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id  path  string  true  "组织ID"
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  types.ListSharesResponse
 // @Security     Bearer
 // @Router       /organizations/{id}/shares [get]
@@ -1289,9 +1289,9 @@ func (h *OrganizationHandler) ListOrgShares(c *gin.Context) {
 }
 
 // ListSharedKnowledgeBases lists all knowledge bases shared to the current user
-// @Summary      获取共享给我的知识库列表
-// @Description  获取通过组织共享给当前用户的所有知识库
-// @Tags         知识库共享
+// @Summary      Get list of knowledge bases shared with me
+// @Description  Gets all knowledge bases shared with the current user through organizations
+// @Tags         Knowledge Base Sharing
 // @Produce      json
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
@@ -1398,14 +1398,14 @@ func (h *OrganizationHandler) ListAgentShares(c *gin.Context) {
 // RemoveAgentShare removes an agent share.
 //
 // RemoveAgentShare godoc
-// @Summary      取消智能体共享
-// @Description  从智能体的共享列表中移除指定共享关系
-// @Tags         组织
+// @Summary      Cancel an agent share
+// @Description  Removes the specified share relationship from an agent's share list
+// @Tags         Organization
 // @Produce      json
-// @Param        id        path      string                  true  "智能体 ID"
-// @Param        share_id  path      string                  true  "共享记录 ID"
+// @Param        id        path      string                  true  "Agent ID"
+// @Param        share_id  path      string                  true  "Share record ID"
 // @Success      200       {object}  map[string]interface{}  "success: true"
-// @Failure      403       {object}  apperrors.AppError         "无权限"
+// @Failure      403       {object}  apperrors.AppError         "Permission denied"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /agents/{id}/shares/{share_id} [delete]
@@ -1425,13 +1425,13 @@ func (h *OrganizationHandler) RemoveAgentShare(c *gin.Context) {
 // ListOrgAgentShares lists all agents shared to an organization.
 //
 // ListOrgAgentShares godoc
-// @Summary      获取共享到本组织的智能体
-// @Description  返回所有被共享到指定组织的智能体（含我的有效权限）
-// @Tags         组织
+// @Summary      Get agents shared to this organization
+// @Description  Returns all agents shared to the specified organization (including my effective permission)
+// @Tags         Organization
 // @Produce      json
-// @Param        id   path      string                  true  "组织 ID"
-// @Success      200  {object}  map[string]interface{}  "智能体共享列表 + total"
-// @Failure      403  {object}  apperrors.AppError         "非组织成员"
+// @Param        id   path      string                  true  "Organization ID"
+// @Success      200  {object}  map[string]interface{}  "Agent share list + total"
+// @Failure      403  {object}  apperrors.AppError         "Not an organization member"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /organizations/{id}/agent-shares [get]
@@ -1501,12 +1501,12 @@ func (h *OrganizationHandler) ListOrgAgentShares(c *gin.Context) {
 // ListSharedAgents lists agents shared to the current user.
 //
 // ListSharedAgents godoc
-// @Summary      获取我可访问的共享智能体
-// @Description  返回所有共享给当前用户所在组织的智能体
-// @Tags         组织
+// @Summary      Get shared agents I can access
+// @Description  Returns all agents shared to organizations the current user belongs to
+// @Tags         Organization
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "智能体列表 + total"
-// @Failure      500  {object}  apperrors.AppError         "服务器错误"
+// @Success      200  {object}  map[string]interface{}  "Agent list + total"
+// @Failure      500  {object}  apperrors.AppError         "Server error"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /shared-agents [get]
@@ -1647,11 +1647,11 @@ func (h *OrganizationHandler) listSpaceKnowledgeBasesInOrganization(ctx context.
 }
 
 // ListOrganizationSharedKnowledgeBases lists all knowledge bases in the given organization (including those shared by the current tenant and those from shared agents), for the list page when a space is selected.
-// @Summary      获取空间内全部知识库（含我共享的、含智能体携带的）
-// @Description  获取指定空间下所有共享知识库，包含直接共享的与通过共享智能体可见的，用于列表页空间视角
-// @Tags         组织管理
+// @Summary      Get all knowledge bases in a space (including mine shared, including agent-carried)
+// @Description  Gets all shared knowledge bases under the specified space, including directly shared ones and those visible via shared agents, for the space view on the list page
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id  path  string  true  "组织ID"
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /organizations/{id}/shared-knowledge-bases [get]
@@ -1694,11 +1694,11 @@ func (h *OrganizationHandler) ListOrganizationSharedKnowledgeBases(c *gin.Contex
 }
 
 // ListOrganizationSharedAgents lists all agents in the given organization (including those shared by the current tenant), for the list page when a space is selected.
-// @Summary      获取空间内全部智能体（含我共享的）
-// @Description  获取指定空间下所有共享智能体，包含他人共享的与我共享的，用于列表页空间视角
-// @Tags         组织管理
+// @Summary      Get all agents in a space (including mine shared)
+// @Description  Gets all shared agents under the specified space, including ones shared by others and ones shared by me, for the space view on the list page
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id  path  string  true  "组织ID"
+// @Param        id  path  string  true  "Organization ID"
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /organizations/{id}/shared-agents [get]
@@ -1841,13 +1841,13 @@ func (h *OrganizationHandler) toOrgResponse(ctx context.Context, org *types.Orga
 // tenant (workspace) name: it resolves matching tenants, filters out tenants
 // already in the org, and returns one row per candidate tenant.
 //
-// @Summary      搜索可邀请的空间
-// @Description  按空间名搜索可邀请的空间（排除已加入的空间）用于邀请加入组织；按空间去重
-// @Tags         组织管理
+// @Summary      Search invitable spaces
+// @Description  Searches invitable spaces by space name (excluding spaces already joined), for inviting members to an organization; deduplicated by space
+// @Tags         Organization Management
 // @Produce      json
-// @Param        id     path   string  true   "组织ID"
-// @Param        q      query  string  true   "搜索关键词（空间名）"
-// @Param        limit  query  int     false  "返回数量限制" default(10)
+// @Param        id     path   string  true   "Organization ID"
+// @Param        q      query  string  true   "Search keyword (space name)"
+// @Param        limit  query  int     false  "Result count limit" default(10)
 // @Success      200    {object}  map[string]interface{}
 // @Failure      403    {object}  apperrors.AppError
 // @Security     Bearer
@@ -1977,13 +1977,13 @@ func (h *OrganizationHandler) SearchUsersForInvite(c *gin.Context) {
 }
 
 // InviteMember directly adds a user to organization
-// @Summary      邀请成员
-// @Description  管理员直接添加用户为组织成员
-// @Tags         组织管理
+// @Summary      Invite a member
+// @Description  Admin directly adds a user as an organization member
+// @Tags         Organization Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                         true  "组织ID"
-// @Param        request  body      types.InviteMemberRequest      true  "邀请信息"
+// @Param        id       path      string                         true  "Organization ID"
+// @Param        request  body      types.InviteMemberRequest      true  "Invite info"
 // @Success      200      {object}  map[string]interface{}
 // @Failure      400      {object}  apperrors.AppError
 // @Failure      403      {object}  apperrors.AppError

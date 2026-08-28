@@ -142,9 +142,11 @@ type KnowledgeBase struct {
 	ProcessingCount int64 `yaml:"processing_count"        json:"processing_count"        gorm:"-"`
 	// ShareCount indicates the number of organizations this knowledge base is shared with (not stored in database)
 	ShareCount int64 `yaml:"share_count"             json:"share_count"             gorm:"-"`
-	// CreatorName 是 CreatorID 对应用户的展示名（username / email 等），
-	// 仅在列表场景由 handler 批量回填，不落库；为空表示创建者无法解析（用户已删除、
-	// CreatorID 为空的老数据等）。前端用它在卡片来源徽章上做 mine vs workspace 的二分。
+	// CreatorName is the display name (username / email / etc.) for the user
+	// corresponding to CreatorID. It's only batch-filled by the handler in list
+	// scenarios and is never persisted; empty means the creator couldn't be
+	// resolved (deleted user, old data with an empty CreatorID, etc.). The
+	// frontend uses it to distinguish mine vs. workspace on the card source badge.
 	CreatorName string `yaml:"-"                       json:"creator_name,omitempty"  gorm:"-"`
 }
 
@@ -532,7 +534,7 @@ type VLMConfig struct {
 	// replacing the system-owned OCR and Markdown output contract.
 	CustomInstructions string `yaml:"custom_instructions,omitempty" json:"custom_instructions,omitempty"`
 
-	// 兼容老版本
+	// Legacy compatibility
 	// Model Name
 	ModelName string `yaml:"model_name" json:"model_name"`
 	// Base URL

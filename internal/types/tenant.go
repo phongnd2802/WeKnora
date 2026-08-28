@@ -307,12 +307,12 @@ type ParserEngineConfig struct {
 	// ChatParserEngineRules selects parser engines for session-scoped chat
 	// documents. Knowledge bases keep their own rules in ChunkingConfig.
 	ChatParserEngineRules []ParserEngineRule `json:"chat_parser_engine_rules,omitempty"`
-	MinerUEndpoint        string             `json:"mineru_endpoint"` // MinerU 自建服务端点
-	MinerUAPIKey          string             `json:"mineru_api_key"`  // MinerU 云 API Key
+	MinerUEndpoint        string             `json:"mineru_endpoint"` // MinerU self-hosted service endpoint
+	MinerUAPIKey          string             `json:"mineru_api_key"`  // MinerU cloud API key
 
-	// MinerU 自建解析参数
+	// MinerU self-hosted parsing parameters
 	MinerUModel         string `json:"mineru_model,omitempty"`          // backend: pipeline, vlm-*, hybrid-*
-	MinerUVLMServerURL  string `json:"mineru_vlm_server_url,omitempty"` // vLLM 服务器地址 (vlm-http-client / hybrid-http-client)
+	MinerUVLMServerURL  string `json:"mineru_vlm_server_url,omitempty"` // vLLM server address (vlm-http-client / hybrid-http-client)
 	MinerUEnableFormula *bool  `json:"mineru_enable_formula,omitempty"`
 	MinerUEnableTable   *bool  `json:"mineru_enable_table,omitempty"`
 	MinerUParseMethod   string `json:"mineru_parse_method,omitempty"`
@@ -321,7 +321,7 @@ type ParserEngineConfig struct {
 	MinerUEnableOCR *bool  `json:"mineru_enable_ocr,omitempty"`
 	MinerULanguage  string `json:"mineru_language,omitempty"`
 
-	// MinerU 云 API 解析参数
+	// MinerU cloud API parsing parameters
 	MinerUCloudModel         string `json:"mineru_cloud_model,omitempty"` // model_version: pipeline, vlm, MinerU-HTML
 	MinerUCloudEnableFormula *bool  `json:"mineru_cloud_enable_formula,omitempty"`
 	MinerUCloudEnableTable   *bool  `json:"mineru_cloud_enable_table,omitempty"`
@@ -679,7 +679,7 @@ type CubeSandboxConfig struct {
 	APIURL        string `json:"api_url,omitempty"`
 	ProxyURL      string `json:"proxy_url,omitempty"`
 	SandboxDomain string `json:"sandbox_domain,omitempty"`
-	APIKey        string `json:"api_key,omitempty"` // 加密
+	APIKey        string `json:"api_key,omitempty"` // encrypted
 	TemplateID    string `json:"template_id,omitempty"`
 
 	// HTTPTimeoutSec bounds each HTTP call to the sandbox control plane.
@@ -700,7 +700,7 @@ type CubeSandboxConfig struct {
 type E2BSandboxConfig struct {
 	APIURL        string `json:"api_url,omitempty"`
 	SandboxDomain string `json:"sandbox_domain,omitempty"`
-	APIKey        string `json:"api_key,omitempty"` // 加密
+	APIKey        string `json:"api_key,omitempty"` // encrypted
 	TemplateID    string `json:"template_id,omitempty"`
 
 	// ProxyURL is the data-plane gateway that fronts envd. E2B Cloud resolves

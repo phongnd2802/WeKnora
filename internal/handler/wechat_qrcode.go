@@ -15,12 +15,12 @@ var qrCodeService = wechat.NewQRCodeService()
 // POST /api/v1/wechat/qrcode
 //
 // WeChatGetQRCode godoc
-// @Summary      获取微信扫码登录二维码
-// @Description  申请一个用于扫码登录绑定的微信二维码（无请求体）
-// @Tags         IM 渠道
+// @Summary      Get a WeChat login QR code
+// @Description  Requests a WeChat QR code for scan-to-login binding (no request body)
+// @Tags         IM Channels
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "二维码信息（qrcode_url + qrcode 标识）"
-// @Failure      500  {object}  map[string]interface{}  "二维码生成失败"
+// @Success      200  {object}  map[string]interface{}  "QR code info (qrcode_url + qrcode identifier)"
+// @Failure      500  {object}  map[string]interface{}  "Failed to generate QR code"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /wechat/qrcode [post]
@@ -46,15 +46,15 @@ func (h *IMHandler) WeChatGetQRCode(c *gin.Context) {
 // POST /api/v1/wechat/qrcode/status
 //
 // WeChatPollQRCodeStatus godoc
-// @Summary      轮询微信二维码状态
-// @Description  查询指定二维码是否已被扫描/确认/过期；confirmed 时返回凭证
-// @Tags         IM 渠道
+// @Summary      Poll WeChat QR code status
+// @Description  Checks whether the given QR code has been scanned/confirmed/expired; returns credentials when confirmed
+// @Tags         IM Channels
 // @Accept       json
 // @Produce      json
 // @Param        request  body      map[string]interface{}  true  "{qrcode: string}"
-// @Success      200      {object}  map[string]interface{}  "扫码状态"
-// @Failure      400      {object}  map[string]interface{}  "请求参数错误"
-// @Failure      500      {object}  map[string]interface{}  "服务器错误"
+// @Success      200      {object}  map[string]interface{}  "Scan status"
+// @Failure      400      {object}  map[string]interface{}  "Invalid request parameters"
+// @Failure      500      {object}  map[string]interface{}  "Server error"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /wechat/qrcode/status [post]

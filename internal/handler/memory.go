@@ -29,11 +29,11 @@ func NewMemoryHandler(memoryService interfaces.MemoryService) *MemoryHandler {
 }
 
 // GetSettings godoc
-// @Summary      获取我的记忆设置
-// @Description  返回合并后的记忆开关状态（空间级 + 个人级）与记忆条数
-// @Tags         长期记忆
+// @Summary      Get my memory settings
+// @Description  Returns the merged memory toggle state (space-level + personal-level) and the memory item count
+// @Tags         Long-term Memory
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "记忆设置"
+// @Success      200  {object}  map[string]interface{}  "Memory settings"
 // @Security     Bearer
 // @Router       /memory/settings [get]
 func (h *MemoryHandler) GetSettings(c *gin.Context) {
@@ -51,13 +51,13 @@ type updateMemorySettingsRequest struct {
 }
 
 // UpdateSettings godoc
-// @Summary      更新我的记忆设置
-// @Description  开启或关闭当前用户自己的长期记忆
-// @Tags         长期记忆
+// @Summary      Update my memory settings
+// @Description  Turns the current user's own long-term memory on or off
+// @Tags         Long-term Memory
 // @Accept       json
 // @Produce      json
-// @Param        request  body      object  true  "设置"
-// @Success      200      {object}  map[string]interface{}  "更新后的设置"
+// @Param        request  body      object  true  "Settings"
+// @Success      200      {object}  map[string]interface{}  "Updated settings"
 // @Security     Bearer
 // @Router       /memory/settings [put]
 func (h *MemoryHandler) UpdateSettings(c *gin.Context) {
@@ -84,14 +84,14 @@ func (h *MemoryHandler) UpdateSettings(c *gin.Context) {
 }
 
 // ListItems godoc
-// @Summary      列出我的记忆
-// @Description  分页返回当前用户的记忆条目，可按状态过滤
-// @Tags         长期记忆
+// @Summary      List my memories
+// @Description  Returns the current user's memory items page by page, optionally filtered by status
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        status  query     string  false  "状态过滤"  Enums(active, superseded, archived, pending)
-// @Param        limit   query     int     false  "每页条数"  default(50)
-// @Param        offset  query     int     false  "偏移量"
-// @Success      200     {object}  map[string]interface{}  "记忆列表"
+// @Param        status  query     string  false  "Status filter"  Enums(active, superseded, archived, pending)
+// @Param        limit   query     int     false  "Items per page"  default(50)
+// @Param        offset  query     int     false  "Offset"
+// @Success      200     {object}  map[string]interface{}  "Memory list"
 // @Security     Bearer
 // @Router       /memory/items [get]
 func (h *MemoryHandler) ListItems(c *gin.Context) {
@@ -139,13 +139,13 @@ func memoryListPaging(c *gin.Context) (limit, offset int) {
 }
 
 // ListTopics godoc
-// @Summary      列出正在观察的主题
-// @Description  返回已计数、尚未提升为长期关注的主题，以及距离阈值还差几次
-// @Tags         长期记忆
+// @Summary      List topics being observed
+// @Description  Returns topics that have been counted but not yet promoted to long-term interest, along with how many more occurrences are needed to reach the threshold
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        limit   query     int  false  "每页条数"  default(50)
-// @Param        offset  query     int  false  "偏移量"
-// @Success      200     {object}  map[string]interface{}  "主题列表"
+// @Param        limit   query     int  false  "Items per page"  default(50)
+// @Param        offset  query     int  false  "Offset"
+// @Success      200     {object}  map[string]interface{}  "Topic list"
 // @Security     Bearer
 // @Router       /memory/topics [get]
 func (h *MemoryHandler) ListTopics(c *gin.Context) {
@@ -164,12 +164,12 @@ func (h *MemoryHandler) ListTopics(c *gin.Context) {
 }
 
 // PromoteTopic godoc
-// @Summary      立即记为长期关注
-// @Description  不等待剩余次数，把正在观察的主题提升为一条长期关注记忆
-// @Tags         长期记忆
+// @Summary      Promote a topic to long-term interest immediately
+// @Description  Promotes a topic being observed to a long-term interest memory without waiting for the remaining occurrences
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id   path      string  true  "主题 ID"
-// @Success      200  {object}  map[string]interface{}  "新增的记忆"
+// @Param        id   path      string  true  "Topic ID"
+// @Success      200  {object}  map[string]interface{}  "Newly created memory"
 // @Security     Bearer
 // @Router       /memory/topics/{id}/promote [post]
 func (h *MemoryHandler) PromoteTopic(c *gin.Context) {
@@ -183,12 +183,12 @@ func (h *MemoryHandler) PromoteTopic(c *gin.Context) {
 }
 
 // DeleteTopic godoc
-// @Summary      停止跟踪一个主题
-// @Description  删除尚未提升的主题计数，并记住这次拒绝，之后不会再自动记为长期关注
-// @Tags         长期记忆
+// @Summary      Stop tracking a topic
+// @Description  Deletes the count for a topic that has not yet been promoted, and remembers this rejection so it will not be automatically promoted to long-term interest again
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id   path      string  true  "主题 ID"
-// @Success      200  {object}  map[string]interface{}  "删除成功"
+// @Param        id   path      string  true  "Topic ID"
+// @Success      200  {object}  map[string]interface{}  "Deleted successfully"
 // @Security     Bearer
 // @Router       /memory/topics/{id} [delete]
 func (h *MemoryHandler) DeleteTopic(c *gin.Context) {
@@ -201,13 +201,13 @@ func (h *MemoryHandler) DeleteTopic(c *gin.Context) {
 }
 
 // ListDocuments godoc
-// @Summary      列出常用资料
-// @Description  返回当前用户回答里反复引用的文档，次数未达习惯门槛的不展示
-// @Tags         长期记忆
+// @Summary      List frequently used documents
+// @Description  Returns documents that are repeatedly referenced in the current user's answers; documents that have not reached the habit threshold are not shown
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        limit   query     int  false  "每页条数"  default(50)
-// @Param        offset  query     int  false  "偏移量"
-// @Success      200     {object}  map[string]interface{}  "文档列表"
+// @Param        limit   query     int  false  "Items per page"  default(50)
+// @Param        offset  query     int  false  "Offset"
+// @Success      200     {object}  map[string]interface{}  "Document list"
 // @Security     Bearer
 // @Router       /memory/documents [get]
 func (h *MemoryHandler) ListDocuments(c *gin.Context) {
@@ -226,12 +226,12 @@ func (h *MemoryHandler) ListDocuments(c *gin.Context) {
 }
 
 // DeleteDocument godoc
-// @Summary      停止用某份文档做个性化检索
-// @Description  删除一条文档亲和度计数，之后检索不再因为这份文档而加权
-// @Tags         长期记忆
+// @Summary      Stop using a document for personalized retrieval
+// @Description  Deletes a document affinity count, after which retrieval no longer weights results based on this document
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id   path      string  true  "亲和度 ID"
-// @Success      200  {object}  map[string]interface{}  "删除成功"
+// @Param        id   path      string  true  "Affinity ID"
+// @Success      200  {object}  map[string]interface{}  "Deleted successfully"
 // @Security     Bearer
 // @Router       /memory/documents/{id} [delete]
 func (h *MemoryHandler) DeleteDocument(c *gin.Context) {
@@ -250,13 +250,13 @@ type createMemoryItemRequest struct {
 }
 
 // CreateItem godoc
-// @Summary      新增一条记忆
-// @Description  手动添加一条长期记忆
-// @Tags         长期记忆
+// @Summary      Create a memory
+// @Description  Manually adds a long-term memory item
+// @Tags         Long-term Memory
 // @Accept       json
 // @Produce      json
-// @Param        request  body      object  true  "记忆内容"
-// @Success      200      {object}  map[string]interface{}  "新增的记忆"
+// @Param        request  body      object  true  "Memory content"
+// @Success      200      {object}  map[string]interface{}  "Newly created memory"
 // @Security     Bearer
 // @Router       /memory/items [post]
 func (h *MemoryHandler) CreateItem(c *gin.Context) {
@@ -280,14 +280,14 @@ type updateMemoryItemRequest struct {
 }
 
 // UpdateItem godoc
-// @Summary      修改一条记忆
-// @Description  修改记忆内容与重要度，修改后该条记忆不会被后台抽取覆盖
-// @Tags         长期记忆
+// @Summary      Edit a memory
+// @Description  Edits a memory item's content and importance; once edited, this item will no longer be overwritten by background extraction
+// @Tags         Long-term Memory
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string  true  "记忆ID"
-// @Param        request  body      object  true  "记忆内容"
-// @Success      200      {object}  map[string]interface{}  "更新后的记忆"
+// @Param        id       path      string  true  "Memory ID"
+// @Param        request  body      object  true  "Memory content"
+// @Success      200      {object}  map[string]interface{}  "Updated memory"
 // @Security     Bearer
 // @Router       /memory/items/{id} [put]
 func (h *MemoryHandler) UpdateItem(c *gin.Context) {
@@ -306,12 +306,12 @@ func (h *MemoryHandler) UpdateItem(c *gin.Context) {
 }
 
 // DeleteItem godoc
-// @Summary      删除一条记忆
-// @Description  永久删除一条记忆
-// @Tags         长期记忆
+// @Summary      Delete a memory
+// @Description  Permanently deletes a memory item
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id  path      string  true  "记忆ID"
-// @Success      200  {object}  map[string]interface{}  "删除成功"
+// @Param        id  path      string  true  "Memory ID"
+// @Success      200  {object}  map[string]interface{}  "Deleted successfully"
 // @Security     Bearer
 // @Router       /memory/items/{id} [delete]
 func (h *MemoryHandler) DeleteItem(c *gin.Context) {
@@ -324,12 +324,12 @@ func (h *MemoryHandler) DeleteItem(c *gin.Context) {
 }
 
 // ConfirmItem godoc
-// @Summary      确认一条推断出的记忆
-// @Description  接受系统推断的记忆，使其开始生效
-// @Tags         长期记忆
+// @Summary      Confirm an inferred memory
+// @Description  Accepts a system-inferred memory so it starts taking effect
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id   path      string  true  "记忆 ID"
-// @Success      200  {object}  map[string]interface{}  "确认成功"
+// @Param        id   path      string  true  "Memory ID"
+// @Success      200  {object}  map[string]interface{}  "Confirmed successfully"
 // @Security     Bearer
 // @Router       /memory/items/{id}/confirm [post]
 //
@@ -346,12 +346,12 @@ func (h *MemoryHandler) ConfirmItem(c *gin.Context) {
 }
 
 // RejectItem godoc
-// @Summary      否决一条推断出的记忆
-// @Description  拒绝系统推断的记忆，并记住这次拒绝
-// @Tags         长期记忆
+// @Summary      Reject an inferred memory
+// @Description  Rejects a system-inferred memory and remembers this rejection
+// @Tags         Long-term Memory
 // @Produce      json
-// @Param        id   path      string  true  "记忆 ID"
-// @Success      200  {object}  map[string]interface{}  "否决成功"
+// @Param        id   path      string  true  "Memory ID"
+// @Success      200  {object}  map[string]interface{}  "Rejected successfully"
 // @Security     Bearer
 // @Router       /memory/items/{id}/reject [post]
 func (h *MemoryHandler) RejectItem(c *gin.Context) {
@@ -364,11 +364,11 @@ func (h *MemoryHandler) RejectItem(c *gin.Context) {
 }
 
 // Clear godoc
-// @Summary      清空我的记忆
-// @Description  永久删除当前用户的全部记忆
-// @Tags         长期记忆
+// @Summary      Clear my memories
+// @Description  Permanently deletes all of the current user's memories
+// @Tags         Long-term Memory
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "清空成功"
+// @Success      200  {object}  map[string]interface{}  "Cleared successfully"
 // @Security     Bearer
 // @Router       /memory/items [delete]
 func (h *MemoryHandler) Clear(c *gin.Context) {
@@ -382,11 +382,11 @@ func (h *MemoryHandler) Clear(c *gin.Context) {
 }
 
 // Export godoc
-// @Summary      导出我的记忆
-// @Description  以 JSON 导出当前用户的全部记忆
-// @Tags         长期记忆
+// @Summary      Export my memories
+// @Description  Exports all of the current user's memories as JSON
+// @Tags         Long-term Memory
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "记忆导出"
+// @Success      200  {object}  map[string]interface{}  "Memory export"
 // @Security     Bearer
 // @Router       /memory/export [get]
 func (h *MemoryHandler) Export(c *gin.Context) {
@@ -427,11 +427,11 @@ func (h *MemoryHandler) Export(c *gin.Context) {
 }
 
 // Consolidate godoc
-// @Summary      立刻整理我的记忆
-// @Description  合并意思接近的条目、归档到期事项，不等待每日后台整理
-// @Tags         长期记忆
+// @Summary      Consolidate my memories now
+// @Description  Merges items with similar meaning and archives expired entries immediately, without waiting for the daily background consolidation
+// @Tags         Long-term Memory
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "整理结果"
+// @Success      200  {object}  map[string]interface{}  "Consolidation result"
 // @Security     Bearer
 // @Router       /memory/consolidate [post]
 func (h *MemoryHandler) Consolidate(c *gin.Context) {

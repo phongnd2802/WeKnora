@@ -309,12 +309,12 @@ var (
 )
 
 // GetSystemInfo godoc
-// @Summary      获取系统信息
-// @Description  获取系统版本、构建信息和引擎配置
-// @Tags         系统
+// @Summary      Get system information
+// @Description  Get the system version, build information, and engine configuration
+// @Tags         System
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  GetSystemInfoResponse  "系统信息"
+// @Success      200  {object}  GetSystemInfoResponse  "System information"
 // @Router       /system/info [get]
 func (h *SystemHandler) GetSystemInfo(c *gin.Context) {
 	ctx := logger.CloneContext(c.Request.Context())
@@ -392,10 +392,10 @@ func (h *SystemHandler) getDocReaderConnInfo() (addr, transport string) {
 // ListParserEngines returns available document parser engines.
 // Merges Go-native static engines with engines discovered from the remote
 // docreader service, so newly added Python engines are auto-discovered.
-// @Summary      列出可用的文档解析引擎
-// @Tags         系统
+// @Summary      List available document parsing engines
+// @Tags         System
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "解析引擎列表"
+// @Success      200  {object}  map[string]interface{}  "Parsing engine list"
 // @Router       /system/parser-engines [get]
 func (h *SystemHandler) ListParserEngines(c *gin.Context) {
 	var overrides map[string]string
@@ -421,11 +421,11 @@ func (h *SystemHandler) ListParserEngines(c *gin.Context) {
 }
 
 // ReconnectDocReader reconnects the document converter to a new (or same) DocReader address.
-// @Summary      重连文档解析服务
-// @Tags         系统
+// @Summary      Reconnect the document parsing service
+// @Tags         System
 // @Accept       json
 // @Produce      json
-// @Param        request  body  object{addr string} true "DocReader 地址"
+// @Param        request  body  object{addr string} true "DocReader address"
 // @Success      200
 // @Router       /system/docreader/reconnect [post]
 func (h *SystemHandler) ReconnectDocReader(c *gin.Context) {
@@ -483,11 +483,11 @@ func (h *SystemHandler) ReconnectDocReader(c *gin.Context) {
 
 // CheckParserEngines runs availability check with the given config overrides (e.g. current form values).
 // Used to test engine availability without saving; body shape matches ParserEngineConfig.
-// @Summary      使用当前参数检测解析引擎可用性
-// @Tags         系统
+// @Summary      Check parsing engine availability using the current parameters
+// @Tags         System
 // @Accept       json
 // @Produce      json
-// @Param        body  body  object  true  "解析引擎配置（与保存接口同结构）"
+// @Param        body  body  object  true  "Parsing engine configuration (same structure as the save endpoint)"
 // @Success      200
 // @Router       /system/parser-engines/check [post]
 func (h *SystemHandler) CheckParserEngines(c *gin.Context) {
@@ -788,9 +788,9 @@ type GetStorageEngineStatusResponse struct {
 }
 
 // GetStorageEngineStatus godoc
-// @Summary      获取存储引擎状态
-// @Description  返回 Local、MinIO、COS 各存储引擎的可用状态及说明，供全局设置与知识库选择使用
-// @Tags         系统
+// @Summary      Get storage engine status
+// @Description  Return the availability status and description of each storage engine (Local, MinIO, COS) for use in global settings and knowledge base selection
+// @Tags         System
 // @Produce      json
 // @Success      200  {object}  GetStorageEngineStatusResponse
 // @Router       /system/storage-engine-status [get]
@@ -903,12 +903,12 @@ type StorageCheckResponse struct {
 }
 
 // CheckStorageEngine tests connectivity for a single storage engine using the provided config.
-// @Summary      测试存储引擎连通性
-// @Description  使用当前填写的参数测试 MinIO/COS 连通性，不保存配置
-// @Tags         系统
+// @Summary      Test storage engine connectivity
+// @Description  Test MinIO/COS connectivity using the currently entered parameters, without saving the configuration
+// @Tags         System
 // @Accept       json
 // @Produce      json
-// @Param        body  body  StorageCheckRequest  true  "存储引擎配置"
+// @Param        body  body  StorageCheckRequest  true  "Storage engine configuration"
 // @Success      200   {object}  StorageCheckResponse
 // @Router       /system/storage-engine-check [post]
 func (h *SystemHandler) CheckStorageEngine(c *gin.Context) {
@@ -1776,9 +1776,9 @@ func sameQueueWeights(left, right map[string]int) bool {
 }
 
 // GetRuntimeQueues godoc
-// @Summary      获取解析任务队列运行时状态
-// @Description  返回各 asynq 队列的实时深度（pending/active/scheduled/retry 等）与 worker 并发配置，仅系统管理员可见
-// @Tags         系统管理
+// @Summary      Get parsing task queue runtime status
+// @Description  Return the real-time depth of each asynq queue (pending/active/scheduled/retry, etc.) and worker concurrency configuration; visible to system administrators only
+// @Tags         System Admin
 // @Produce      json
 // @Success      200  {object}  RuntimeQueuesResponse
 // @Router       /system/admin/runtime/queues [get]

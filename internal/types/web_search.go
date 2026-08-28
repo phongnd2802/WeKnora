@@ -13,15 +13,15 @@ type WebSearchConfig struct {
 	// Deprecated: Use WebSearchProviderEntity.Parameters.APIKey instead.
 	APIKey string `json:"api_key,omitempty"`
 
-	MaxResults        int      `json:"max_results"`        // 最大搜索结果数
-	IncludeDate       bool     `json:"include_date"`       // 是否包含日期
-	CompressionMethod string   `json:"compression_method"` // 压缩方法：none, summary, extract, rag
-	Blacklist         []string `json:"blacklist"`          // 黑名单规则列表
-	// RAG压缩相关配置
-	EmbeddingModelID   string `json:"embedding_model_id,omitempty"`  // 嵌入模型ID（用于RAG压缩）
-	EmbeddingDimension int    `json:"embedding_dimension,omitempty"` // 嵌入维度（用于RAG压缩）
-	RerankModelID      string `json:"rerank_model_id,omitempty"`     // 重排模型ID（用于RAG压缩）
-	DocumentFragments  int    `json:"document_fragments,omitempty"`  // 文档片段数量（用于RAG压缩）
+	MaxResults        int      `json:"max_results"`        // maximum number of search results
+	IncludeDate       bool     `json:"include_date"`       // whether to include the date
+	CompressionMethod string   `json:"compression_method"` // compression method: none, summary, extract, rag
+	Blacklist         []string `json:"blacklist"`          // blacklist rule list
+	// RAG compression-related config
+	EmbeddingModelID   string `json:"embedding_model_id,omitempty"`  // embedding model ID (used for RAG compression)
+	EmbeddingDimension int    `json:"embedding_dimension,omitempty"` // embedding dimension (used for RAG compression)
+	RerankModelID      string `json:"rerank_model_id,omitempty"`     // rerank model ID (used for RAG compression)
+	DocumentFragments  int    `json:"document_fragments,omitempty"`  // document fragment count (used for RAG compression)
 	ProxyURL           string `json:"proxy_url,omitempty"`           // Optional per-request proxy override; normally empty — use WebSearchProviderEntity.Parameters.proxy_url. Merged at call time when set.
 }
 

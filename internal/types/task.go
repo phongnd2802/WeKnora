@@ -473,13 +473,13 @@ type KnowledgeMoveProgress struct {
 	TargetKBID string            `json:"target_kb_id"`
 	Status     KBCloneTaskStatus `json:"status"`
 	Progress   int               `json:"progress"`   // 0-100
-	Total      int               `json:"total"`      // 总知识数
-	Processed  int               `json:"processed"`  // 已处理数
-	Failed     int               `json:"failed"`     // 失败数
-	Message    string            `json:"message"`    // 状态消息
-	Error      string            `json:"error"`      // 错误信息
-	CreatedAt  int64             `json:"created_at"` // 任务创建时间
-	UpdatedAt  int64             `json:"updated_at"` // 最后更新时间
+	Total      int               `json:"total"`      // total knowledge count
+	Processed  int               `json:"processed"`  // processed count
+	Failed     int               `json:"failed"`     // failed count
+	Message    string            `json:"message"`    // status message
+	Error      string            `json:"error"`      // error message
+	CreatedAt  int64             `json:"created_at"` // task creation time
+	UpdatedAt  int64             `json:"updated_at"` // last updated time
 }
 
 // ManualProcessPayload represents the manual knowledge processing task payload.
@@ -555,10 +555,10 @@ type KBCloneProgress struct {
 	TargetID  string            `json:"target_id"`
 	Status    KBCloneTaskStatus `json:"status"`
 	Progress  int               `json:"progress"`   // 0-100
-	Total     int               `json:"total"`      // 总知识数
-	Processed int               `json:"processed"`  // 已处理数
-	Message   string            `json:"message"`    // 状态消息
-	Error     string            `json:"error"`      // 错误信息
-	CreatedAt int64             `json:"created_at"` // 任务创建时间
-	UpdatedAt int64             `json:"updated_at"` // 最后更新时间
+	Total     int               `json:"total"`      // total knowledge count
+	Processed int               `json:"processed"`  // processed count
+	Message   string            `json:"message"`    // status message
+	Error     string            `json:"error"`      // error message
+	CreatedAt int64             `json:"created_at"` // task creation time
+	UpdatedAt int64             `json:"updated_at"` // last updated time
 }

@@ -34,13 +34,13 @@ type SkillInfoResponse struct {
 }
 
 // ListSkills godoc
-// @Summary      获取当前沙箱配置上可执行的 Skills
-// @Description  返回指定沙箱配置镜像内、智能体实际能调用的已安装技能（ready 且启用）。不传 sandbox_config_id 时列表为空。
+// @Summary      Get skills runnable under the current sandbox config
+// @Description  Returns the installed skills (ready and enabled) that the agent can actually invoke inside the given sandbox config's image. Returns an empty list when sandbox_config_id is not provided.
 // @Tags         Skills
 // @Accept       json
 // @Produce      json
 // @Param        sandbox_config_id  query     string  false  "Sandbox config ID"
-// @Success      200  {object}  map[string]interface{}  "Skills列表"
+// @Success      200  {object}  map[string]interface{}  "List of skills"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /skills [get]

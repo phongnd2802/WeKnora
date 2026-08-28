@@ -30,14 +30,14 @@ type EvaluationRequest struct {
 }
 
 // Evaluation godoc
-// @Summary      执行评估
-// @Description  对知识库进行评估测试
-// @Tags         评估
+// @Summary      Run an evaluation
+// @Description  Runs an evaluation test against a knowledge base
+// @Tags         Evaluation
 // @Accept       json
 // @Produce      json
-// @Param        request  body      EvaluationRequest  true  "评估请求参数"
-// @Success      200      {object}  map[string]interface{}  "评估任务"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      EvaluationRequest  true  "Evaluation request parameters"
+// @Success      200      {object}  map[string]interface{}  "Evaluation task"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /evaluation/ [post]
@@ -93,14 +93,14 @@ type GetEvaluationRequest struct {
 }
 
 // GetEvaluationResult godoc
-// @Summary      获取评估结果
-// @Description  根据任务ID获取评估结果
-// @Tags         评估
+// @Summary      Get evaluation result
+// @Description  Gets the evaluation result for a given task ID
+// @Tags         Evaluation
 // @Accept       json
 // @Produce      json
-// @Param        task_id  query     string  true  "评估任务ID"
-// @Success      200      {object}  map[string]interface{}  "评估结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        task_id  query     string  true  "Evaluation task ID"
+// @Success      200      {object}  map[string]interface{}  "Evaluation result"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /evaluation/ [get]

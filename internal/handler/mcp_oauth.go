@@ -58,12 +58,12 @@ type mcpOAuthAuthorizeRequest struct {
 // AuthorizeURL begins authorization and returns the URL the browser must open.
 //
 // AuthorizeURL godoc
-// @Summary      发起 MCP OAuth 授权
-// @Description  对使用 OAuth 的 MCP 服务执行发现与动态客户端注册，返回浏览器应跳转的授权地址（当前用户维度）
-// @Tags         MCP服务
+// @Summary      Start MCP OAuth authorization
+// @Description  Perform discovery and dynamic client registration for an OAuth-enabled MCP service, returning the authorization URL the browser should redirect to (scoped to the current user)
+// @Tags         MCP Services
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                    true  "MCP 服务 ID"
+// @Param        id       path      string                    true  "MCP service ID"
 // @Param        request  body      map[string]interface{}    true  "{redirect_uri: string, frontend_redirect?: string}"
 // @Success      200      {object}  map[string]interface{}    "{authorization_url: string, authorization_attempt: string}"
 // @Failure      400      {object}  errors.AppError
@@ -126,12 +126,12 @@ func (h *MCPOAuthHandler) AuthorizeURL(c *gin.Context) {
 // the frontend with the result encoded in the URL fragment.
 //
 // Callback godoc
-// @Summary      MCP OAuth 回调
-// @Description  接收授权服务器回调并完成 code 交换，随后重定向回前端
-// @Tags         MCP服务
-// @Param        code   query  string  false  "授权码"
-// @Param        state  query  string  false  "状态参数"
-// @Param        error  query  string  false  "授权错误码"
+// @Summary      MCP OAuth callback
+// @Description  Receive the authorization server callback, complete the code exchange, and redirect back to the frontend
+// @Tags         MCP Services
+// @Param        code   query  string  false  "Authorization code"
+// @Param        state  query  string  false  "State parameter"
+// @Param        error  query  string  false  "Authorization error code"
 // @Success      302
 // @Router       /mcp-services/oauth/callback [get]
 func (h *MCPOAuthHandler) Callback(c *gin.Context) {
@@ -172,12 +172,12 @@ func (h *MCPOAuthHandler) Callback(c *gin.Context) {
 // Status reports whether the current user has authorized this service.
 //
 // Status godoc
-// @Summary      查询 MCP OAuth 授权状态
-// @Description  返回当前用户的 OAuth Token 生命周期状态；传 authorization_attempt 时只检查本次授权流程
-// @Tags         MCP服务
+// @Summary      Query MCP OAuth authorization status
+// @Description  Return the current user's OAuth token lifecycle status; when authorization_attempt is passed, only that specific authorization flow is checked
+// @Tags         MCP Services
 // @Produce      json
-// @Param        id   path      string                  true  "MCP 服务 ID"
-// @Param        authorization_attempt  query  string  false  "本次授权尝试 ID；传入后不会接受历史 Token"
+// @Param        id   path      string                  true  "MCP service ID"
+// @Param        authorization_attempt  query  string  false  "This authorization attempt's ID; when passed, historical tokens are not accepted"
 // @Success      200  {object}  map[string]interface{}  "{authorized: bool, state: string, refresh_available: bool, expires_at?: string}"
 // @Security     Bearer
 // @Router       /mcp-services/{id}/oauth/status [get]
@@ -222,11 +222,11 @@ func (h *MCPOAuthHandler) Status(c *gin.Context) {
 // Revoke removes the current user's stored token and recycles connections.
 //
 // Revoke godoc
-// @Summary      撤销 MCP OAuth 授权
-// @Description  删除当前用户对指定 MCP 服务的 OAuth 令牌
-// @Tags         MCP服务
+// @Summary      Revoke MCP OAuth authorization
+// @Description  Delete the current user's OAuth token for the specified MCP service
+// @Tags         MCP Services
 // @Produce      json
-// @Param        id   path  string  true  "MCP 服务 ID"
+// @Param        id   path  string  true  "MCP service ID"
 // @Success      204
 // @Security     Bearer
 // @Router       /mcp-services/{id}/oauth/token [delete]
@@ -264,16 +264,16 @@ type resolveMCPOAuthBody struct {
 // resume the tool into another failure.
 //
 // ResolveMCPOAuth godoc
-// @Summary      完成对话内 MCP OAuth 授权
-// @Description  用户在对话中完成 OAuth 授权后调用，校验令牌存在后恢复被暂停的 Agent 工具调用
-// @Tags         MCP服务
+// @Summary      Complete in-conversation MCP OAuth authorization
+// @Description  Called after the user completes OAuth authorization within a conversation; once the token is confirmed to exist, the paused Agent tool call is resumed
+// @Tags         MCP Services
 // @Accept       json
 // @Produce      json
-// @Param        pending_id  path  string                  true  "待授权 ID"
+// @Param        pending_id  path  string                  true  "Pending authorization ID"
 // @Param        request     body  map[string]interface{}  true  "{service_id: string}"
 // @Success      200         {object}  map[string]interface{}
 // @Failure      400         {object}  errors.AppError
-// @Failure      409         {object}  errors.AppError  "用户尚未完成授权"
+// @Failure      409         {object}  errors.AppError  "User has not yet completed authorization"
 // @Security     Bearer
 // @Router       /agent/mcp-oauth-resolutions/{pending_id} [post]
 func (h *MCPOAuthHandler) ResolveMCPOAuth(c *gin.Context) {
@@ -375,11 +375,11 @@ func (h *MCPOAuthHandler) ResolveMCPOAuth(c *gin.Context) {
 // completing authorization. This unblocks the paused agent with a denial.
 //
 // CancelMCPOAuth godoc
-// @Summary      跳过对话内 MCP OAuth 授权
-// @Description  用户主动跳过 OAuth 授权，解除 Agent 阻塞
-// @Tags         MCP服务
+// @Summary      Skip in-conversation MCP OAuth authorization
+// @Description  User actively skips OAuth authorization, unblocking the Agent
+// @Tags         MCP Services
 // @Produce      json
-// @Param        pending_id  path  string  true  "待授权 ID"
+// @Param        pending_id  path  string  true  "Pending authorization ID"
 // @Success      200         {object}  map[string]interface{}
 // @Failure      404         {object}  errors.AppError
 // @Security     Bearer

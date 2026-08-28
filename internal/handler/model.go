@@ -52,14 +52,14 @@ type CreateModelRequest struct {
 }
 
 // CreateModel godoc
-// @Summary      创建模型
-// @Description  创建新的模型配置
-// @Tags         模型管理
+// @Summary      Create model
+// @Description  Create a new model configuration
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Param        request  body      CreateModelRequest  true  "模型信息"
-// @Success      201      {object}  map[string]interface{}  "创建的模型"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      CreateModelRequest  true  "Model information"
+// @Success      201      {object}  map[string]interface{}  "Created model"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models [post]
@@ -123,14 +123,14 @@ func (h *ModelHandler) CreateModel(c *gin.Context) {
 }
 
 // GetModel godoc
-// @Summary      获取模型详情
-// @Description  根据ID获取模型详情
-// @Tags         模型管理
+// @Summary      Get model details
+// @Description  Get model details by ID
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "模型ID"
-// @Success      200  {object}  map[string]interface{}  "模型详情"
-// @Failure      404  {object}  errors.AppError         "模型不存在"
+// @Param        id   path      string  true  "Model ID"
+// @Success      200  {object}  map[string]interface{}  "Model details"
+// @Failure      404  {object}  errors.AppError         "Model not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models/{id} [get]
@@ -168,13 +168,13 @@ func (h *ModelHandler) GetModel(c *gin.Context) {
 }
 
 // ListModels godoc
-// @Summary      获取模型列表
-// @Description  获取当前空间的所有模型
-// @Tags         模型管理
+// @Summary      Get model list
+// @Description  Get all models in the current space
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "模型列表"
-// @Failure      400  {object}  errors.AppError         "请求参数错误"
+// @Success      200  {object}  map[string]interface{}  "Model list"
+// @Failure      400  {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models [get]
@@ -533,15 +533,15 @@ type UpdateModelRequest struct {
 }
 
 // UpdateModel godoc
-// @Summary      更新模型
-// @Description  更新模型配置信息
-// @Tags         模型管理
+// @Summary      Update model
+// @Description  Update model configuration information
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string              true  "模型ID"
-// @Param        request  body      UpdateModelRequest  true  "更新信息"
-// @Success      200      {object}  map[string]interface{}  "更新后的模型"
-// @Failure      404      {object}  errors.AppError         "模型不存在"
+// @Param        id       path      string              true  "Model ID"
+// @Param        request  body      UpdateModelRequest  true  "Update information"
+// @Success      200      {object}  map[string]interface{}  "Updated model"
+// @Failure      404      {object}  errors.AppError         "Model not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models/{id} [put]
@@ -648,14 +648,14 @@ func (h *ModelHandler) UpdateModel(c *gin.Context) {
 }
 
 // DeleteModel godoc
-// @Summary      删除模型
-// @Description  删除指定的模型
-// @Tags         模型管理
+// @Summary      Delete model
+// @Description  Delete the specified model
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Param        id   path      string  true  "模型ID"
-// @Success      200  {object}  map[string]interface{}  "删除成功"
-// @Failure      404  {object}  errors.AppError         "模型不存在"
+// @Param        id   path      string  true  "Model ID"
+// @Success      200  {object}  map[string]interface{}  "Deleted successfully"
+// @Failure      404  {object}  errors.AppError         "Model not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models/{id} [delete]
@@ -723,13 +723,13 @@ func modelTypeToFrontend(mt types.ModelType) string {
 }
 
 // ListModelProviders godoc
-// @Summary      获取模型厂商列表
-// @Description  根据模型类型获取支持的厂商列表及配置信息
-// @Tags         模型管理
+// @Summary      Get model provider list
+// @Description  Get the list of supported providers and their configuration information by model type
+// @Tags         Model Management
 // @Accept       json
 // @Produce      json
-// @Param        model_type  query     string  false  "模型类型 (chat, embedding, rerank, vllm)"
-// @Success      200         {object}  map[string]interface{}  "厂商列表"
+// @Param        model_type  query     string  false  "Model type (chat, embedding, rerank, vllm)"
+// @Success      200         {object}  map[string]interface{}  "Provider list"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /models/providers [get]

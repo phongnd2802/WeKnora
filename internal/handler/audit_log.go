@@ -35,16 +35,16 @@ type auditLogListResponse struct {
 }
 
 // ListTenantAuditLog godoc
-// @Summary      获取空间审计日志
-// @Description  返回该空间最近的审计事件，按 id 倒序。游标分页：将上次响应的 next_cursor 作为下一次请求的 after_id。
-// @Tags         审计日志
+// @Summary      Get space audit logs
+// @Description  Returns the space's recent audit events, ordered by id descending. Cursor pagination: pass the previous response's next_cursor as this request's after_id.
+// @Tags         Audit Log
 // @Produce      json
-// @Param        id        path   string  true   "空间ID"
-// @Param        after_id  query  int     false  "游标：返回 id 小于此值的记录（默认从最新开始）"
-// @Param        limit     query  int     false  "页大小，1-100，默认 50"
-// @Param        action    query  string  false  "按 action 精确过滤（如 rbac.member_added / rbac.access_denied）"
-// @Param        outcome   query  string  false  "按 outcome 精确过滤（success / denied）"
-// @Param        actor     query  string  false  "按 actor_user_id 精确过滤"
+// @Param        id        path   string  true   "Space ID"
+// @Param        after_id  query  int     false  "Cursor: returns records with id less than this value (defaults to starting from the latest)"
+// @Param        limit     query  int     false  "Page size, 1-100, default 50"
+// @Param        action    query  string  false  "Exact filter by action (e.g. rbac.member_added / rbac.access_denied)"
+// @Param        outcome   query  string  false  "Exact filter by outcome (success / denied)"
+// @Param        actor     query  string  false  "Exact filter by actor_user_id"
 // @Success      200  {object}  auditLogListResponse
 // @Failure      400  {object}  errors.AppError
 // @Security     Bearer
@@ -110,16 +110,16 @@ func (h *AuditLogHandler) ListTenantAuditLog(c *gin.Context) {
 // knowledge base. The route has already resolved KB access; this handler adds
 // an owner-tenant check so organization-shared consumers cannot inspect source
 // workspace actors or configuration history.
-// @Summary      获取知识库活动记录
-// @Description  返回知识库的重要变更与后台任务入口。仅知识库创建者或所属空间管理员可读，共享空间不可读。
-// @Tags         知识库
+// @Summary      Get knowledge base activity log
+// @Description  Returns significant changes and background task entries for the knowledge base. Readable only by the knowledge base creator or the owning space's admin; not readable in shared spaces.
+// @Tags         Knowledge Base
 // @Produce      json
-// @Param        id        path   string  true   "知识库ID"
-// @Param        after_id  query  int     false  "游标：返回 id 小于此值的记录"
-// @Param        limit     query  int     false  "页大小，1-100，默认 50"
-// @Param        action    query  string  false  "按 action 精确过滤"
-// @Param        outcome   query  string  false  "按 outcome 精确过滤"
-// @Param        actor     query  string  false  "按 actor_user_id 精确过滤"
+// @Param        id        path   string  true   "Knowledge base ID"
+// @Param        after_id  query  int     false  "Cursor: returns records with id less than this value"
+// @Param        limit     query  int     false  "Page size, 1-100, default 50"
+// @Param        action    query  string  false  "Exact filter by action"
+// @Param        outcome   query  string  false  "Exact filter by outcome"
+// @Param        actor     query  string  false  "Exact filter by actor_user_id"
 // @Success      200  {object}  auditLogListResponse
 // @Failure      403  {object}  errors.AppError
 // @Security     Bearer
@@ -186,15 +186,15 @@ func parseAuditCursor(c *gin.Context) (uint64, int) {
 }
 
 // ListSystemAuditLog godoc
-// @Summary      获取平台审计日志
-// @Description  返回 system-scope（tenant_id=0）的审计事件，覆盖 system.setting_changed / system.admin_promoted / system.admin_revoked 等 SystemAdmin 操作。按 id 倒序的游标分页。
-// @Tags         审计日志
+// @Summary      Get platform audit logs
+// @Description  Returns system-scope (tenant_id=0) audit events, covering SystemAdmin operations such as system.setting_changed / system.admin_promoted / system.admin_revoked. Cursor pagination ordered by id descending.
+// @Tags         Audit Log
 // @Produce      json
-// @Param        after_id  query  int     false  "游标：返回 id 小于此值的记录（默认从最新开始）"
-// @Param        limit     query  int     false  "页大小，1-100，默认 50"
-// @Param        action    query  string  false  "按 action 精确过滤（如 system.setting_changed）"
-// @Param        outcome   query  string  false  "按 outcome 精确过滤（success / denied）"
-// @Param        actor     query  string  false  "按 actor_user_id 精确过滤"
+// @Param        after_id  query  int     false  "Cursor: returns records with id less than this value (defaults to starting from the latest)"
+// @Param        limit     query  int     false  "Page size, 1-100, default 50"
+// @Param        action    query  string  false  "Exact filter by action (e.g. system.setting_changed)"
+// @Param        outcome   query  string  false  "Exact filter by outcome (success / denied)"
+// @Param        actor     query  string  false  "Exact filter by actor_user_id"
 // @Success      200  {object}  auditLogListResponse
 // @Failure      500  {object}  errors.AppError
 // @Security     Bearer

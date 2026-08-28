@@ -48,16 +48,16 @@ type invitationLookupRequest struct {
 }
 
 // LookupInvitationByToken godoc
-// @Summary      解析共享邀请链接 token
-// @Description  根据邀请链接中的 token 返回邀请上下文（空间名 / 角色 / 过期时间），
-// @Description  供注册页展示。无认证；token 无效或被撤销返回 410。
-// @Description  使用 POST + body 而非 GET + path，避免 token 落入访问日志 / 浏览器历史 / tracing。
-// @Tags         认证
+// @Summary      Resolve a shared invitation link token
+// @Description  Given the token from an invitation link, returns the invitation context (space name / role / expiry time)
+// @Description  for display on the registration page. No authentication required; returns 410 if the token is invalid or revoked.
+// @Description  Uses POST + body instead of GET + path to keep the token out of access logs / browser history / tracing.
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
-// @Param        request  body      invitationLookupRequest  true  "邀请 token"
+// @Param        request  body      invitationLookupRequest  true  "Invitation token"
 // @Success      200      {object}  invitationLookupResponse
-// @Failure      410      {object}  apperrors.AppError  "链接无效或已撤销"
+// @Failure      410      {object}  apperrors.AppError  "Link is invalid or has been revoked"
 // @Router       /auth/invitations/lookup [post]
 func (h *AuthHandler) LookupInvitationByToken(c *gin.Context) {
 	ctx := c.Request.Context()
@@ -105,17 +105,17 @@ func (h *AuthHandler) LookupInvitationByToken(c *gin.Context) {
 }
 
 // RegisterByInvite godoc
-// @Summary      使用共享链接注册
-// @Description  通过 Owner 生成的共享邀请链接 token 完成注册，绕过 invite_only 模式拦截。
-// @Description  注册者自填邮箱（与 token 不绑定）；注册成功后自动加入对应空间。
-// @Tags         认证
+// @Summary      Register via a shared invitation link
+// @Description  Completes registration using a token from an Owner-generated shared invitation link, bypassing the invite_only mode restriction.
+// @Description  The registrant fills in their own email (not bound to the token); on successful registration they are automatically added to the corresponding space.
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
-// @Param        request  body      registerByInviteRequest  true  "邀请注册请求"
+// @Param        request  body      registerByInviteRequest  true  "Invitation registration request"
 // @Success      201      {object}  types.LoginResponse
-// @Failure      400      {object}  apperrors.AppError  "请求参数错误"
-// @Failure      409      {object}  apperrors.AppError  "邮箱已注册"
-// @Failure      410      {object}  apperrors.AppError  "链接无效或已撤销"
+// @Failure      400      {object}  apperrors.AppError  "Invalid request parameters"
+// @Failure      409      {object}  apperrors.AppError  "Email already registered"
+// @Failure      410      {object}  apperrors.AppError  "Link is invalid or has been revoked"
 // @Router       /auth/register-by-invite [post]
 //
 // RegisterByInvite is intentionally NOT subject to the invite_only gate:

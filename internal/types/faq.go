@@ -300,7 +300,7 @@ type FAQExportEntry struct {
 
 // FAQEntryPayload 用于创建/更新 FAQ 条目的 payload
 type FAQEntryPayload struct {
-	// ID 可选，用于数据迁移时指定 seq_id（必须小于自增起始值 100000000）
+	// ID is optional; used to specify a seq_id during data migration (must be less than the auto-increment start value 100000000)
 	ID                *int64          `json:"id,omitempty"`
 	StandardQuestion  string          `json:"standard_question"    binding:"required"`
 	SimilarQuestions  []string        `json:"similar_questions"`
@@ -323,8 +323,8 @@ type FAQBatchUpsertPayload struct {
 	Entries     []FAQEntryPayload `json:"entries"      binding:"required"`
 	Mode        string            `json:"mode"         binding:"oneof=append replace"`
 	KnowledgeID string            `json:"knowledge_id"`
-	TaskID      string            `json:"task_id"` // 可选，如果不传则自动生成UUID
-	DryRun      bool              `json:"dry_run"` // 仅验证，不实际导入
+	TaskID      string            `json:"task_id"` // Optional; a UUID is auto-generated if not provided
+	DryRun      bool              `json:"dry_run"` // Validate only, don't actually import
 }
 
 // FAQFailedEntry 表示导入/验证失败的条目
@@ -377,9 +377,9 @@ type FAQSearchRequest struct {
 	QueryText            string  `json:"query_text"             binding:"required"`
 	VectorThreshold      float64 `json:"vector_threshold"`
 	MatchCount           int     `json:"match_count"`
-	FirstPriorityTagIDs  []int64 `json:"first_priority_tag_ids"`  // 第一优先级标签ID列表，限定命中范围，优先级最高
-	SecondPriorityTagIDs []int64 `json:"second_priority_tag_ids"` // 第二优先级标签ID列表，限定命中范围，优先级低于第一优先级
-	OnlyRecommended      bool    `json:"only_recommended"`        // 是否仅返回推荐的条目
+	FirstPriorityTagIDs  []int64 `json:"first_priority_tag_ids"`  // First-priority tag ID list, restricts match scope, highest priority
+	SecondPriorityTagIDs []int64 `json:"second_priority_tag_ids"` // Second-priority tag ID list, restricts match scope, lower priority than the first
+	OnlyRecommended      bool    `json:"only_recommended"`        // Whether to return only recommended entries
 }
 
 // UntaggedTagName is the default tag name for entries without a tag
@@ -398,11 +398,11 @@ type FAQEntryFieldsUpdate struct {
 // 1. 按条目ID更新：使用 ByID 字段
 // 2. 按Tag更新：使用 ByTag 字段，将该Tag下所有条目应用相同的更新
 type FAQEntryFieldsBatchUpdate struct {
-	// ByID 按条目ID更新，key为条目ID (seq_id)
+	// ByID updates by entry ID; key is the entry ID (seq_id)
 	ByID map[int64]FAQEntryFieldsUpdate `json:"by_id,omitempty"`
-	// ByTag 按Tag批量更新，key为TagID (seq_id)
+	// ByTag batch-updates by tag; key is the tag ID (seq_id)
 	ByTag map[int64]FAQEntryFieldsUpdate `json:"by_tag,omitempty"`
-	// ExcludeIDs 在ByTag操作中需要排除的ID列表 (seq_id)
+	// ExcludeIDs is the list of IDs to exclude from a ByTag operation (seq_id)
 	ExcludeIDs []int64 `json:"exclude_ids,omitempty"`
 }
 

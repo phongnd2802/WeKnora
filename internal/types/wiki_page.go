@@ -197,7 +197,7 @@ type WikiPage struct {
 	// queries don't have to join wiki_folders.
 	FolderID string `json:"folder_id,omitempty" gorm:"column:folder_id;type:varchar(36);index;default:''"`
 	// CategoryPath is the directory breadcrumb that groups this page in the
-	// wiki browser, e.g. ["AI", "LLM 应用", "RAG"]. Derived cache of the
+	// wiki browser, e.g. ["AI", "LLM Applications", "RAG"]. Derived cache of the
 	// folder chain identified by FolderID.
 	CategoryPath StringArray `json:"category_path,omitempty" gorm:"type:json"`
 	// WikiPath is a normalized, sortable path derived from page_type,

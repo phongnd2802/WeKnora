@@ -86,14 +86,14 @@ func parseTenantIDFromPath(c *gin.Context) (uint64, bool) {
 }
 
 // ListMembers godoc
-// @Summary      列出空间成员
-// @Description  分页返回当前空间内 active 成员（含每位成员的角色、邮箱、头像）；支持 q 按邮箱/用户名筛选
-// @Tags         空间成员
+// @Summary      List space members
+// @Description  Returns a paginated list of active members in the current space (including each member's role, email, and avatar); supports filtering by email/username via q
+// @Tags         Space Members
 // @Produce      json
-// @Param        id         path   string  true   "空间 ID"
-// @Param        q          query  string  false  "按邮箱/用户名模糊筛选"
-// @Param        page       query  int     false  "页码（从 1 起）"  default(1)
-// @Param        page_size  query  int     false  "每页数量（最大 100）"  default(20)
+// @Param        id         path   string  true   "Space ID"
+// @Param        q          query  string  false  "Fuzzy filter by email/username"
+// @Param        page       query  int     false  "Page number (starting at 1)"  default(1)
+// @Param        page_size  query  int     false  "Items per page (max 100)"  default(20)
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /tenants/{id}/members [get]
@@ -163,27 +163,29 @@ func (h *TenantMemberHandler) ListMembers(c *gin.Context) {
 }
 
 // AddMember godoc
-// @Summary      直接添加空间成员（直加路径）
+// @Summary      Add a space member directly (direct-add path)
 // @Description
 //
-//	Owner 通过 email 直接把用户作为 active 成员添加进当前空间。
+//	Owner adds a user directly as an active member of the current space by email.
 //
-//	这是【直加路径】，被加入的用户没有任何确认机会就出现在空间里——
-//	保留它是为了三类不需要走邀请确认的场景：
-//	  1. 自动化脚本 / 平台运维 / 数据迁移；
-//	  2. 跨空间超管 (CanAccessAllTenants) 的批量编排；
-//	  3. 对接外部 IdP 时由身份源单向同步成员。
+//	This is the [direct-add path]: the added user appears in the space with no
+//	chance to confirm anything. It is kept around for three scenarios that don't
+//	need to go through invite confirmation:
+//	  1. Automation scripts / platform ops / data migration;
+//	  2. Bulk orchestration by a cross-space super admin (CanAccessAllTenants);
+//	  3. One-way member sync from an identity source when integrating an external IdP.
 //
-//	所有由 UI 触发的「邀请伙伴加入」交互应改走
-//	POST /tenants/:id/invitations，那条路径会先创建 pending 行，让被邀请
-//	人在 /me/invitations 主动接受后再写 tenant_members 行（PR #1303 后续）。
-//	这条路径与 invitations 路径共存而不互相替代。
+//	Any UI-triggered "invite a teammate" interaction should instead use
+//	POST /tenants/:id/invitations, which first creates a pending row and only
+//	writes the tenant_members row after the invitee actively accepts at
+//	/me/invitations (follow-up to PR #1303). This path coexists with the
+//	invitations path rather than replacing it.
 //
-// @Tags         空间成员
+// @Tags         Space Members
 // @Accept       json
 // @Produce      json
-// @Param        id        path  string                 true  "空间 ID"
-// @Param        request   body  addMemberRequest       true  "邀请请求"
+// @Param        id        path  string                 true  "Space ID"
+// @Param        request   body  addMemberRequest       true  "Invite request"
 // @Success      201  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /tenants/{id}/members [post]
@@ -306,14 +308,14 @@ func addMemberAndRespond(
 }
 
 // UpdateMemberRole godoc
-// @Summary      修改空间成员角色
-// @Description  Owner 修改某位成员在当前空间内的角色；不能将最后一位 Owner 降级
-// @Tags         空间成员
+// @Summary      Update a space member's role
+// @Description  Owner changes a member's role within the current space; the last remaining Owner cannot be demoted
+// @Tags         Space Members
 // @Accept       json
 // @Produce      json
-// @Param        id       path  string                  true  "空间 ID"
-// @Param        user_id  path  string                  true  "用户 ID"
-// @Param        request  body  updateMemberRoleRequest true  "目标角色"
+// @Param        id       path  string                  true  "Space ID"
+// @Param        user_id  path  string                  true  "User ID"
+// @Param        request  body  updateMemberRoleRequest true  "Target role"
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /tenants/{id}/members/{user_id} [put]
@@ -361,12 +363,12 @@ func (h *TenantMemberHandler) UpdateMemberRole(c *gin.Context) {
 }
 
 // RemoveMember godoc
-// @Summary      移除空间成员
-// @Description  Owner 将某位成员从当前空间中移除（软删除 tenant_members 行）；不能移除最后一位 Owner
-// @Tags         空间成员
+// @Summary      Remove a space member
+// @Description  Owner removes a member from the current space (soft-deletes the tenant_members row); the last remaining Owner cannot be removed
+// @Tags         Space Members
 // @Produce      json
-// @Param        id       path  string  true  "空间 ID"
-// @Param        user_id  path  string  true  "用户 ID"
+// @Param        id       path  string  true  "Space ID"
+// @Param        user_id  path  string  true  "User ID"
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /tenants/{id}/members/{user_id} [delete]
@@ -400,15 +402,17 @@ func (h *TenantMemberHandler) RemoveMember(c *gin.Context) {
 }
 
 // LeaveTenant godoc
-// @Summary      退出当前空间
-// @Description  调用方主动退出当前空间。等价于以自己的 user_id 调 RemoveMember，
+// @Summary      Leave the current space
+// @Description  The caller voluntarily leaves the current space. Equivalent to calling RemoveMember
 //
-//	但不需要 Owner 权限——非 Owner 也可以自助离开。最后一位 Owner 仍然不能离开
-//	（需先把其他成员提升为 Owner），由服务层 ErrLastOwner 拦截。
+//	with their own user_id, but without needing Owner privileges — non-Owners
+//	can self-serve leave too. The last remaining Owner still cannot leave (another
+//	member must be promoted to Owner first); this is enforced by the service-layer
+//	ErrLastOwner check.
 //
-// @Tags         空间成员
+// @Tags         Space Members
 // @Produce      json
-// @Param        id  path  string  true  "空间 ID"
+// @Param        id  path  string  true  "Space ID"
 // @Success      200  {object}  map[string]interface{}
 // @Security     Bearer
 // @Router       /tenants/{id}/leave [post]

@@ -173,16 +173,16 @@ func (h *IMHandler) ListAllIMChannels(c *gin.Context) {
 // UpdateIMChannel updates an IM channel.
 //
 // UpdateIMChannel godoc
-// @Summary      更新 IM 渠道
-// @Description  更新指定 IM 渠道的名称、模式、知识库、凭证或启用状态
-// @Tags         IM 渠道
+// @Summary      Update IM channel
+// @Description  Update the name, mode, knowledge base, credentials, or enabled state of the specified IM channel
+// @Tags         IM Channels
 // @Accept       json
 // @Produce      json
-// @Param        id       path      string                  true  "渠道 ID"
-// @Param        request  body      map[string]interface{}  true  "更新字段（name/mode/output_mode/knowledge_base_id/credentials/enabled）"
-// @Success      200      {object}  map[string]interface{}  "更新后的渠道"
-// @Failure      400      {object}  map[string]interface{}  "请求参数错误"
-// @Failure      404      {object}  map[string]interface{}  "渠道不存在"
+// @Param        id       path      string                  true  "Channel ID"
+// @Param        request  body      map[string]interface{}  true  "Fields to update (name/mode/output_mode/knowledge_base_id/credentials/enabled)"
+// @Success      200      {object}  map[string]interface{}  "Updated channel"
+// @Failure      400      {object}  map[string]interface{}  "Invalid request parameters"
+// @Failure      404      {object}  map[string]interface{}  "Channel not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /im-channels/{id} [put]
@@ -268,14 +268,14 @@ func (h *IMHandler) UpdateIMChannel(c *gin.Context) {
 // DeleteIMChannel deletes an IM channel.
 //
 // DeleteIMChannel godoc
-// @Summary      删除 IM 渠道
-// @Description  删除指定 IM 渠道
-// @Tags         IM 渠道
+// @Summary      Delete IM channel
+// @Description  Delete the specified IM channel
+// @Tags         IM Channels
 // @Produce      json
-// @Param        id   path      string                  true  "渠道 ID"
+// @Param        id   path      string                  true  "Channel ID"
 // @Success      200  {object}  map[string]interface{}  "success: true"
-// @Failure      400  {object}  map[string]interface{}  "请求参数错误"
-// @Failure      404  {object}  map[string]interface{}  "渠道不存在"
+// @Failure      400  {object}  map[string]interface{}  "Invalid request parameters"
+// @Failure      404  {object}  map[string]interface{}  "Channel not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /im-channels/{id} [delete]
@@ -303,14 +303,14 @@ func (h *IMHandler) DeleteIMChannel(c *gin.Context) {
 // ToggleIMChannel toggles the enabled state of an IM channel.
 //
 // ToggleIMChannel godoc
-// @Summary      启用/停用 IM 渠道
-// @Description  切换指定 IM 渠道的启用状态
-// @Tags         IM 渠道
+// @Summary      Enable/disable IM channel
+// @Description  Toggle the enabled state of the specified IM channel
+// @Tags         IM Channels
 // @Produce      json
-// @Param        id   path      string                  true  "渠道 ID"
-// @Success      200  {object}  map[string]interface{}  "更新后的渠道"
-// @Failure      400  {object}  map[string]interface{}  "请求参数错误"
-// @Failure      404  {object}  map[string]interface{}  "渠道不存在"
+// @Param        id   path      string                  true  "Channel ID"
+// @Success      200  {object}  map[string]interface{}  "Updated channel"
+// @Failure      400  {object}  map[string]interface{}  "Invalid request parameters"
+// @Failure      404  {object}  map[string]interface{}  "Channel not found"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /im-channels/{id}/toggle [post]
@@ -357,15 +357,15 @@ func writeIMCallbackACK(c *gin.Context, platform string) {
 // Route: POST /api/v1/im/callback/:channel_id
 //
 // IMCallback godoc
-// @Summary      IM 平台回调
-// @Description  接收各 IM 平台的事件回调；走平台自身签名校验，不使用 API Key
-// @Tags         IM 回调
+// @Summary      IM platform callback
+// @Description  Receive event callbacks from various IM platforms; verified via the platform's own signature check, not the API key
+// @Tags         IM Callbacks
 // @Accept       json
 // @Produce      json
-// @Param        channel_id  path      string                  true  "渠道 ID"
-// @Success      200         {object}  map[string]interface{}  "处理结果"
-// @Failure      400         {object}  map[string]interface{}  "请求参数错误"
-// @Failure      401         {object}  map[string]interface{}  "签名校验失败"
+// @Param        channel_id  path      string                  true  "Channel ID"
+// @Success      200         {object}  map[string]interface{}  "Processing result"
+// @Failure      400         {object}  map[string]interface{}  "Invalid request parameters"
+// @Failure      401         {object}  map[string]interface{}  "Signature verification failed"
 // @Router       /im/callback/{channel_id} [get]
 // @Router       /im/callback/{channel_id} [post]
 func (h *IMHandler) IMCallback(c *gin.Context) {

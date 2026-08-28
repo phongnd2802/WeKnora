@@ -66,17 +66,17 @@ func (h *MessageHandler) resolveResourceRewriter(c *gin.Context) (*storageurl.Re
 }
 
 // LoadMessages godoc
-// @Summary      加载消息历史
-// @Description  加载会话的消息历史，支持分页和时间筛选
-// @Tags         消息
+// @Summary      Load message history
+// @Description  Load a session's message history, with pagination and time filtering support
+// @Tags         Messages
 // @Accept       json
 // @Produce      json
-// @Param        session_id     path      string  true   "会话ID"
-// @Param        limit          query     int     false  "返回数量"  default(20)
-// @Param        before_time    query     string  false  "在此时间之前的消息（RFC3339Nano格式）"
-// @Param        resource_urls  query     string  false  "文件引用形式，public 返回可加载直链"  Enums(handle, public)  default(handle)
-// @Success      200            {object}  map[string]interface{}  "消息列表"
-// @Failure      400          {object}  errors.AppError         "请求参数错误"
+// @Param        session_id     path      string  true   "Session ID"
+// @Param        limit          query     int     false  "Number of messages to return"  default(20)
+// @Param        before_time    query     string  false  "Messages before this time (RFC3339Nano format)"
+// @Param        resource_urls  query     string  false  "File reference format; public returns a directly loadable link"  Enums(handle, public)  default(handle)
+// @Success      200            {object}  map[string]interface{}  "Message list"
+// @Failure      400          {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /messages/{session_id}/load [get]
@@ -178,15 +178,15 @@ func (h *MessageHandler) LoadMessages(c *gin.Context) {
 }
 
 // DeleteMessage godoc
-// @Summary      删除消息
-// @Description  从会话中删除指定消息
-// @Tags         消息
+// @Summary      Delete message
+// @Description  Delete the specified message from a session
+// @Tags         Messages
 // @Accept       json
 // @Produce      json
-// @Param        session_id  path      string  true  "会话ID"
-// @Param        id          path      string  true  "消息ID"
-// @Success      200         {object}  map[string]interface{}  "删除成功"
-// @Failure      500         {object}  errors.AppError         "服务器错误"
+// @Param        session_id  path      string  true  "Session ID"
+// @Param        id          path      string  true  "Message ID"
+// @Success      200         {object}  map[string]interface{}  "Deleted successfully"
+// @Failure      500         {object}  errors.AppError         "Server error"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /messages/{session_id}/{id} [delete]
@@ -233,14 +233,14 @@ func (h *MessageHandler) DeleteMessage(c *gin.Context) {
 }
 
 // SearchMessages godoc
-// @Summary      搜索历史对话
-// @Description  通过关键词和/或向量相似度搜索历史对话记录，支持关键词、向量、混合三种模式
-// @Tags         消息
+// @Summary      Search conversation history
+// @Description  Search conversation history by keyword and/or vector similarity; supports keyword, vector, and hybrid modes
+// @Tags         Messages
 // @Accept       json
 // @Produce      json
-// @Param        request  body      SearchMessagesRequest  true  "搜索请求"
-// @Success      200      {object}  map[string]interface{}  "搜索结果"
-// @Failure      400      {object}  errors.AppError         "请求参数错误"
+// @Param        request  body      SearchMessagesRequest  true  "Search request"
+// @Success      200      {object}  map[string]interface{}  "Search results"
+// @Failure      400      {object}  errors.AppError         "Invalid request parameters"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /messages/search [post]
@@ -299,12 +299,12 @@ type SearchMessagesRequest struct {
 }
 
 // GetChatHistoryKBStats godoc
-// @Summary      获取聊天历史知识库统计
-// @Description  获取聊天历史知识库的统计信息（已索引消息数、知识库大小等）
-// @Tags         消息
+// @Summary      Get chat history knowledge base statistics
+// @Description  Get statistics for the chat history knowledge base (indexed message count, knowledge base size, etc.)
+// @Tags         Messages
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  map[string]interface{}  "统计信息"
+// @Success      200  {object}  map[string]interface{}  "Statistics"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /messages/chat-history-stats [get]

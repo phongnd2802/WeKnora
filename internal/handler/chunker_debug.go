@@ -107,16 +107,16 @@ type PreviewChunkingResponse struct {
 // calls, no logging of the supplied text.
 //
 // PreviewChunking godoc
-// @Summary      预览分块结果
-// @Description  对提交的文本运行自适应分块器并返回分块预览，不写入数据库不生成 embedding。文本最大 64k 字符
-// @Tags         分块
+// @Summary      Preview chunking result
+// @Description  Runs the adaptive chunker on the submitted text and returns a chunking preview, without writing to the database or generating embeddings. Text is limited to 64k characters.
+// @Tags         Chunking
 // @Accept       json
 // @Produce      json
 // @Param        request  body      handler.PreviewChunkingRequest   true  "{text, chunking_config}"
-// @Success      200      {object}  handler.PreviewChunkingResponse  "分块结果"
-// @Failure      400      {object}  map[string]interface{}           "请求参数错误"
-// @Failure      413      {object}  map[string]interface{}           "文本超过预览限制"
-// @Failure      504      {object}  map[string]interface{}           "分块超时"
+// @Success      200      {object}  handler.PreviewChunkingResponse  "Chunking result"
+// @Failure      400      {object}  map[string]interface{}           "Invalid request parameters"
+// @Failure      413      {object}  map[string]interface{}           "Text exceeds the preview limit"
+// @Failure      504      {object}  map[string]interface{}           "Chunking timed out"
 // @Security     Bearer
 // @Security     ApiKeyAuth
 // @Router       /chunker/preview [post]

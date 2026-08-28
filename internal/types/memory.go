@@ -374,9 +374,10 @@ type MemoryConfig struct {
 	// when an embedding model is reachable.
 	//
 	// Lexical matching alone cannot find a memory the user has re-worded, which
-	// is most of them: "回答直接给结论" and "别铺垫那么多" share no tokens. The
-	// cost is one embedding call per turn, bounded and degraded to lexical on
-	// failure, so the feature never becomes a reason a chat is slow.
+	// is most of them: "just give me the conclusion" and "skip the preamble"
+	// share no tokens. The cost is one embedding call per turn, bounded and
+	// degraded to lexical on failure, so the feature never becomes a reason a
+	// chat is slow.
 	VectorRecall *bool `json:"vector_recall"`
 	// RetrievalConditioning lets memory shape retrieval — query rewriting and
 	// per-document ranking — rather than only being appended to the answer
