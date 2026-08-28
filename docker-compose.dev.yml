@@ -42,7 +42,7 @@ services:
     container_name: WeKnora-searxng-init-dev
     command: ["sh", "-c", "cp /template/settings.yml /etc/searxng/settings.yml && chmod 0644 /etc/searxng/settings.yml"]
     volumes:
-      - ./docker/searxng/settings.yml:/template/settings.yml:ro
+      - ./docker/searxng/settings.yml:/template/settings.yml:ro,z
       - searxng_config_dev:/etc/searxng
     restart: "no"
     networks:
@@ -359,7 +359,7 @@ services:
     ports:
       - "5556:5556"
     volumes:
-      - ./misc/dex-config.yaml:/etc/dex/config.yaml
+      - ./misc/dex-config.yaml:/etc/dex/config.yaml:z
     command: ["dex", "serve", "/etc/dex/config.yaml"]
     profiles:
       - dex
